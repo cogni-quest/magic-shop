@@ -1,13 +1,36 @@
-# Claude Code local settings
-.claude/settings.local.json
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.vite/
+coverage/
+
+# The originals as they came off the phone — several megabytes each, and the
+# webp in public/ is the only version the site ever serves. Keep them out of
+# git and let `npm run photos` rebuild what is committed.
+photos/
+
+# Local settings and secrets
+*.local
+.env
+.env.*
+!.env.example
+
+# Editors
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.swp
 
 # OS
 Thumbs.db
-ehthumbs.db
-Desktop.ini
+desktop.ini
 .DS_Store
 
-# Editors
-.vs/
-.idea/
-*.swp
+# Logs
+*.log
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*

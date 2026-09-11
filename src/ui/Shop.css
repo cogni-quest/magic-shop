@@ -1,0 +1,679 @@
+/* THE SHOP.
+ *
+ * CogniQuest's palette and its habits — color-mix instead of rgba, borders in
+ * the entity's own colour, pills and rounded boxes, depth from a lift — but
+ * turned up, because this screen has a different job. Next door the child is
+ * working, and the restraint is there so that arithmetic is the loudest thing
+ * on the page. Here he is spending what the working earned, and the screen is
+ * the reward: gold, parchment, frames, a seal on what is already his.
+ *
+ * Everything decorative is drawn in CSS. No texture files, no icon font, no web
+ * font — the site has to open on a tablet over someone's phone tethering.
+ */
+
+/* ── The room ────────────────────────────────────────────────────────── */
+
+.shop {
+  --ink: var(--fg);
+  /* The one display face. A serif does more for «treasure» than any amount of
+     ornament, and Georgia is on every machine this will ever open on. */
+  --display: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
+  /* Warm shadow for the gold, so a glow reads as lamplight and not as a border. */
+  --glow: color-mix(in srgb, var(--gold) 55%, transparent);
+
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  /* Two lamps and a floor: a warm pool behind the shelf, a cooler one behind the
+     sign, over a parchment wash. Fixed, so scrolling the shelf does not drag the
+     room along with it. */
+  background:
+    radial-gradient(60rem 40rem at 20% -10%, color-mix(in srgb, var(--gold) 22%, transparent), transparent 70%),
+    radial-gradient(50rem 35rem at 95% 15%, color-mix(in srgb, #8f4028 18%, transparent), transparent 70%),
+    var(--bg);
+  background-attachment: fixed;
+}
+
+/* One focus ring for the whole shop, in the action colour, drawn outside
+   whatever it lands on. Chrome's default is a hard black rectangle, and on a
+   card it looks like damage. A mouse click leaves no ring; a Tab key does. */
+.shop :focus-visible {
+  outline: 3px solid var(--action);
+  outline-offset: 3px;
+}
+
+.shop :focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* ── The sign over the door ──────────────────────────────────────────── */
+
+.shopbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  padding: 0.7rem 1.1rem 0.8rem;
+  border-bottom: 3px solid color-mix(in srgb, var(--gold) 45%, transparent);
+  border-radius: 0 0 22px 22px;
+  /* Opaque and slightly darker than the room, like a board hung on the wall.
+     Not translucent: a blurred strip of photographs would compete with the
+     photographs. */
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--gold) 14%, var(--bg)),
+    color-mix(in srgb, var(--gold) 6%, var(--bg))
+  );
+  box-shadow: 0 4px 18px color-mix(in srgb, #000 14%, transparent);
+}
+
+.shopbar__left,
+.shopbar__right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.shopbar__mark {
+  font-size: 2rem;
+  line-height: 1;
+  /* The shopkeeper stands in lamplight like everything else on his sign. */
+  filter: drop-shadow(0 2px 4px color-mix(in srgb, var(--gold) 60%, transparent));
+}
+
+.shopbar__title {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(1.3rem, 4.5vw, 1.7rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: color-mix(in srgb, var(--gold) 55%, var(--ink));
+}
+
+.shopbar__tally {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0.1rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* A row of coins, filling up. The number beside it says the same thing, but the
+   row is the thing a six-year-old actually watches. */
+.tally {
+  display: inline-flex;
+  gap: 0.2rem;
+}
+
+.tally__pip {
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--gold) 50%, transparent);
+  border-radius: 999px;
+}
+
+.tally__pip--on {
+  background: var(--gold);
+  box-shadow: 0 0 6px var(--glow);
+}
+
+/* ── The purse ───────────────────────────────────────────────────────── */
+
+.purse {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  /* 44px, the smallest thing a small finger hits reliably. Everything tappable
+     on this screen clears it. */
+  min-height: 2.75rem;
+  padding: 0.2rem 1rem;
+  border: 2px solid color-mix(in srgb, var(--gold) 70%, transparent);
+  border-radius: 999px;
+  /* A struck coin: light off the top edge, shadow pooling at the bottom. */
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--gold) 26%, var(--bg)),
+    color-mix(in srgb, var(--gold) 12%, var(--bg))
+  );
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent),
+    0 2px 10px color-mix(in srgb, var(--gold) 30%, transparent);
+  color: color-mix(in srgb, var(--gold) 70%, var(--ink));
+  font: inherit;
+  font-family: var(--display);
+  font-size: clamp(1.3rem, 5vw, 1.7rem);
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.purse--editing {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px var(--glow);
+  cursor: text;
+}
+
+/* Both states are the same width, so the sign does not jump between 9 and 10. */
+.purse__amount,
+.purse__input {
+  min-width: 3ch;
+  text-align: right;
+}
+
+.purse__input {
+  width: 4ch;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  outline: none;
+}
+
+/* ── Clearing the shelf ──────────────────────────────────────────────── */
+
+.reset__start,
+.reset__no {
+  padding: 0.35rem 0.8rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.reset__start:hover,
+.reset__no:hover {
+  color: var(--ink);
+}
+
+.reset__ask {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.reset__yes {
+  padding: 0.35rem 0.8rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--danger);
+  color: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ── The shelves ─────────────────────────────────────────────────────── */
+
+.tabs {
+  display: flex;
+  gap: 0.6rem;
+  padding: 1rem 1rem 0;
+  /* Sideways rather than wrapped: six shelves on a phone should stay one row to
+     scroll, not become a wall to read. */
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex: 0 0 auto;
+  min-height: 2.75rem;
+  padding: 0.4rem 1.3rem;
+  border: 2px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  /* A pressable slab: the bottom edge is thicker, and it thins when pressed. */
+  border-bottom-width: 4px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--ink) 4%, var(--bg));
+  color: var(--muted);
+  font: inherit;
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.12s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.tab:active {
+  transform: translateY(2px);
+  border-bottom-width: 2px;
+}
+
+.tab--active {
+  border-color: var(--card);
+  background: color-mix(in srgb, var(--card) 14%, var(--bg));
+  /* Pulled towards the text colour rather than used neat: one hex has to read on
+     an off-white page and on a near-black one. */
+  color: color-mix(in srgb, var(--card) 65%, var(--ink));
+}
+
+.tab__icon {
+  font-size: 1.2rem;
+}
+
+.shelf {
+  flex: 1;
+}
+
+.shelf__empty {
+  padding: 3rem 1rem;
+  color: var(--muted);
+  text-align: center;
+  font-family: var(--display);
+  font-size: 1.2rem;
+}
+
+.grid {
+  display: grid;
+  /* `auto-fit`, so four toys spread across a desktop instead of huddling into
+     the left third — the empty tracks collapse and the cards share what is
+     there. At 360px it still gives two columns: 1rem of padding each side and a
+     1rem gutter leave 156px a card, and 9.5rem is 152. Browsing a shop one card
+     at a time is scrolling, not shopping. */
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 1.1rem;
+  max-width: 64rem;
+  margin: 0 auto;
+  padding: 1.2rem 1rem 3rem;
+  list-style: none;
+}
+
+.grid li {
+  display: flex;
+}
+
+/* ── A slot on the shelf ─────────────────────────────────────────────── */
+
+.item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  /* Wide columns on a desktop would stretch a card to 250px and the shop would
+     start to look like a spreadsheet. A toy keeps a toy's size and centres. */
+  max-width: 15rem;
+  margin: 0 auto;
+  padding: 0.85rem 0.7rem 1rem;
+  border: 3px solid color-mix(in srgb, var(--card) 50%, transparent);
+  border-radius: 22px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--card) 10%, var(--bg)),
+    color-mix(in srgb, var(--card) 4%, var(--bg))
+  );
+  /* A second, thinner frame inside the first — the way a case has a case. */
+  box-shadow:
+    inset 0 0 0 2px color-mix(in srgb, var(--bg) 70%, transparent),
+    0 6px 16px color-mix(in srgb, #000 12%, transparent);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+/* The lift is a mouse thing. On the tablet this is actually used on, the same
+   feedback has to come from the press. */
+/* The lift only. The frame's colour is the card's state — owned, affordable, out
+   of reach — and hovering does not change the state, so it must not change the
+   colour: a bought card going brick-red under the cursor reads as «undone». */
+@media (hover: hover) {
+  .item:hover {
+    transform: translateY(-5px);
+  }
+}
+
+.item--nudged {
+  animation: shake 0.3s;
+}
+
+/* ── The portrait window ─────────────────────────────────────────────── */
+
+.item__photo-btn {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  /* Matches the frame inside it, so the focus ring follows the picture's corners
+     rather than boxing them. */
+  border-radius: 16px;
+  background: none;
+  cursor: zoom-in;
+}
+
+.item__frame {
+  position: relative;
+  display: block;
+  /* Holds the zoom in. Without it a scaled photograph spills over the card. */
+  overflow: hidden;
+  border-radius: 16px;
+  /* Glass over a picture in a case: a bright edge at the top, dark at the foot. */
+  box-shadow:
+    inset 0 2px 6px color-mix(in srgb, #000 30%, transparent),
+    inset 0 -1px 0 color-mix(in srgb, #fff 25%, transparent);
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  /* Shaped to the photographs rather than square: the toys are shot upright, and
+     a square box would letterbox every one of them. */
+  aspect-ratio: 4 / 5;
+  /* `cover`, with the crop aimed and zoomed per photograph — these were taken in
+     a garden with the figure well off in the frame, and an honest fit would give
+     a card of pine needles with a green speck in it. */
+  object-fit: cover;
+  background: color-mix(in srgb, var(--card) 14%, var(--bg));
+  transition: filter 0.2s ease, transform 0.25s ease;
+}
+
+.photo--fallback {
+  display: grid;
+  place-items: center;
+  font-size: 3rem;
+}
+
+@media (hover: hover) {
+  /* A half-step closer on hover — the toy leans out of its case. */
+  .item:hover .photo {
+    filter: brightness(1.04);
+  }
+}
+
+.item__name {
+  margin: 0;
+  font-family: var(--display);
+  /* A shade larger than CogniQuest's card name: this reader is still sounding
+     words out. */
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.item__note {
+  margin: -0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* ── The price ───────────────────────────────────────────────────────── */
+
+/* Knowingly louder than CogniQuest, which keeps its numbers bare — there, a pill
+   around a digit would have read as something to press on a screen full of
+   arithmetic. Here the price IS a token, struck like the coin inside it, and it
+   is what the whole screen is about. */
+.item__price {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.85rem;
+  border: 2px solid color-mix(in srgb, var(--gold) 60%, transparent);
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--gold) 24%, var(--bg)),
+    color-mix(in srgb, var(--gold) 10%, var(--bg))
+  );
+  box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 50%, transparent);
+  color: color-mix(in srgb, var(--gold) 72%, var(--ink));
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Buying ──────────────────────────────────────────────────────────── */
+
+.item__action {
+  display: grid;
+  place-items: center;
+  min-height: 2.75rem;
+  margin-top: auto;
+}
+
+.item__buy {
+  min-height: 2.75rem;
+  padding: 0.45rem 1.5rem;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, #fff 22%, var(--action)),
+    var(--action)
+  );
+  /* The slab under the button, so pressing it has somewhere to go. */
+  box-shadow:
+    0 4px 0 color-mix(in srgb, #000 28%, var(--action)),
+    0 6px 14px color-mix(in srgb, var(--action) 40%, transparent);
+  color: #fff;
+  font: inherit;
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.item__buy:hover {
+  transform: translateY(-2px);
+}
+
+.item__buy:active {
+  transform: translateY(4px);
+  box-shadow: 0 0 0 color-mix(in srgb, #000 28%, var(--action));
+}
+
+/* What the child can pay for right now, lit from behind. The one thing on the
+   shelf that moves by itself — and only ever this, so it means something. */
+.item--affordable {
+  border-color: color-mix(in srgb, var(--gold) 70%, transparent);
+  animation: within-reach 2.4s ease-in-out infinite;
+}
+
+@keyframes within-reach {
+  50% {
+    box-shadow:
+      inset 0 0 0 2px color-mix(in srgb, var(--bg) 70%, transparent),
+      0 6px 16px color-mix(in srgb, #000 12%, transparent),
+      0 0 22px var(--glow);
+  }
+}
+
+/* ── Out of reach ────────────────────────────────────────────────────── */
+
+.item--short {
+  border-color: color-mix(in srgb, var(--ink) 14%, transparent);
+  background: color-mix(in srgb, var(--ink) 4%, var(--bg));
+}
+
+.item--short .photo {
+  filter: grayscale(0.75) brightness(0.85);
+}
+
+.item__lock {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 2.4rem;
+  /* Dark enough that the padlock reads at a glance, light enough that the toy
+     behind it is still worth wanting. */
+  background: color-mix(in srgb, #000 28%, transparent);
+  filter: drop-shadow(0 2px 5px color-mix(in srgb, #000 60%, transparent));
+}
+
+.item--short .item__name {
+  color: var(--muted);
+}
+
+.item--short .item__price {
+  border-color: color-mix(in srgb, var(--short) 50%, transparent);
+  background: none;
+  box-shadow: none;
+  color: var(--short);
+}
+
+.item__buy--short {
+  background: none;
+  border: 2px dashed color-mix(in srgb, var(--short) 55%, transparent);
+  box-shadow: none;
+  color: var(--short);
+  font-size: 0.9rem;
+  cursor: default;
+}
+
+.item__buy--short:hover,
+.item__buy--short:active {
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Owned ───────────────────────────────────────────────────────────── */
+
+.item--bought {
+  border-color: var(--owned);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--owned) 16%, var(--bg)),
+    color-mix(in srgb, var(--owned) 6%, var(--bg))
+  );
+}
+
+/* A seal in wax, pressed across the corner of the case. */
+.item__seal {
+  position: absolute;
+  top: 0.9rem;
+  right: -0.6rem;
+  padding: 0.25rem 0.9rem;
+  border: 2px solid color-mix(in srgb, #fff 35%, var(--owned));
+  border-radius: 999px;
+  background: var(--owned);
+  box-shadow: 0 3px 10px color-mix(in srgb, var(--owned) 55%, transparent);
+  color: #fff;
+  font-family: var(--display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  rotate: -8deg;
+  animation: stamped 0.4s cubic-bezier(0.2, 1.4, 0.5, 1);
+}
+
+/* Pressed down onto the card, rather than grown out of it. */
+@keyframes stamped {
+  from {
+    opacity: 0;
+    scale: 2.2;
+    rotate: 8deg;
+  }
+}
+
+.item__undo {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.item__undo:hover {
+  color: var(--ink);
+}
+
+/* ── The photograph, full size ───────────────────────────────────────── */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: color-mix(in srgb, #000 82%, transparent);
+  animation: fade-in 0.15s ease;
+  cursor: zoom-out;
+}
+
+.lightbox__box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-width: min(92vw, 32rem);
+  animation: pop-in 0.25s cubic-bezier(0.2, 1.4, 0.5, 1);
+}
+
+.photo--full {
+  width: auto;
+  max-width: 100%;
+  max-height: 74vh;
+  aspect-ratio: auto;
+  /* Whole and uncropped — the framing on the card is a compromise for the grid,
+     and this is the view that repays opening it. */
+  object-fit: contain;
+  border: 3px solid color-mix(in srgb, var(--gold) 70%, transparent);
+  border-radius: 18px;
+  background: none;
+}
+
+.lightbox__name {
+  margin: 0;
+  color: #fff;
+  font-family: var(--display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.lightbox__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  border-radius: 999px;
+  background: color-mix(in srgb, #fff 18%, transparent);
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* ── How things move ─────────────────────────────────────────────────── */
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+
+@keyframes shake {
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}

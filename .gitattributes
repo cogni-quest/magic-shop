@@ -1,0 +1,11 @@
+# Normalise line endings: always LF in the repository
+* text=auto eol=lf
+
+# Leave binary assets alone
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.webp  binary
+*.gif   binary
+*.ico   binary
+*.svg   text
