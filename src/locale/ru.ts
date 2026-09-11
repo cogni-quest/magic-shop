@@ -35,29 +35,23 @@ export const ru = {
   } as Record<string, string>,
 
   shop: {
-    /** Above the shelf, so the balance in the corner has something to answer. */
+    /** Read out for the number in the corner; the coin already says it visually. */
     purseLabel: (coins: number) => `в кошельке ${ru.coins(coins)}`,
-    purseEdit: 'Сколько у тебя монет?',
     price: (coins: number) => `цена ${ru.coins(coins)}`,
     /** Engraved above the number, in small capitals. */
     priceLabel: 'цена',
-    buy: 'Купить',
+    /**
+     * What a case says when the coins are there for it. Not «купить» — nothing
+     * on this page buys anything; the trade happens at the kitchen table.
+     */
+    ready: 'можно брать',
     short: (missing: number) => `не хватает ${missing}`,
     shortLabel: (missing: number) => `не хватает ${ru.coins(missing)}`,
     bought: 'Куплено',
-    undo: 'вернуть',
     empty: 'Здесь пока пусто',
     /** The full-screen photograph. */
     openPhoto: (name: string) => `${name} — посмотреть`,
     close: 'Закрыть',
-  },
-
-  /** Clears the shelf. Two steps, like «Новая игра» next door. */
-  reset: {
-    start: 'Начать заново',
-    ask: 'Стереть покупки?',
-    yes: 'Да',
-    no: 'Нет',
   },
 
   /**

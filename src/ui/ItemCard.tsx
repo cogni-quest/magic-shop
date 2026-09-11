@@ -1,9 +1,9 @@
-import { useState, type CSSProperties } from 'react'
+import type { CSSProperties } from 'react'
+import type { ItemState } from '@/core/shelf'
 import { t } from '@/locale'
 import type { Item } from '@/shop/catalog'
 import { Corners } from './Corners'
 import { Photo } from './Photo'
-import type { ItemState } from './useWallet'
 
 /**
  * One toy, in its case on the shelf.
@@ -12,32 +12,24 @@ import type { ItemState } from './useWallet'
  * vignette in each corner — the lid of a box, opened. Three states, told apart
  * by the colour of the metal: gold for what he can take today, cinnabar for what
  * he cannot yet, emerald for what is already his.
+ *
+ * Nothing here is a button except the photograph. Buying happens at the kitchen
+ * table; this says what it would cost and whether he is there yet.
  */
 export function ItemCard({
   item,
   state,
   shortfall,
-  onBuy,
-  onRefund,
   onOpenPhoto,
 }: {
   item: Item
   state: ItemState
   /** How many coins short, when that is what the state means. */
   shortfall: number
-  onBuy: () => void
-  onRefund: () => void
   onOpenPhoto: () => void
 }) {
-  // Set by a tap on a price the child cannot pay, cleared when the shake ends.
-  const [nudged, setNudged] = useState(false)
-
   return (
-    <article
-      className={`item item--${state}${nudged ? ' item--nudged' : ''}`}
-      style={{ '--f': item.color } as CSSProperties}
-      onAnimationEnd={() => setNudged(false)}
-    >
+    <article className={`item item--${state}`} style={{ '--f': item.color } as CSSProperties}>
       <Corners />
 
       <button className="item__photo-btn" onClick={onOpenPhoto} aria-label={t.shop.openPhoto(item.name)}>
@@ -68,33 +60,14 @@ export function ItemCard({
         </span>
       </span>
 
-      <div className="item__action">
-        {state === 'affordable' && (
-          <button className="item__buy" onClick={onBuy}>
-            {t.shop.buy}
-          </button>
-        )}
-
-        {/* Not `disabled`. A disabled button swallows the tap, and a child who
-            taps and gets nothing back concludes the shop is broken — so this one
-            answers, by shaking and saying how far off he is. */}
+      {/* Kept at a fixed height across all three states, so a shelf of cases
+          lines up whatever is on it. */}
+      <div className="item__mark">
+        {state === 'affordable' && <span className="mark mark--ready">{t.shop.ready}</span>}
         {state === 'short' && (
-          <button
-            className="item__buy item__buy--short"
-            aria-disabled="true"
-            aria-label={t.shop.shortLabel(shortfall)}
-            onClick={() => setNudged(true)}
-          >
-            <span className="tabular">{t.shop.short(shortfall)}</span>
-          </button>
-        )}
-
-        {/* Small and quiet, because it undoes something the child wanted — but
-            present, because the alternative to a mis-tap is an argument. */}
-        {state === 'bought' && (
-          <button className="item__undo" onClick={onRefund}>
-            {t.shop.undo}
-          </button>
+          <span className="mark mark--short tabular" aria-label={t.shop.shortLabel(shortfall)}>
+            {t.shop.short(shortfall)}
+          </span>
         )}
       </div>
     </article>

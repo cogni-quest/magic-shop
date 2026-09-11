@@ -1,23 +1,22 @@
 import { useState } from 'react'
+import { stateOf, shortfall } from '@/core/shelf'
 import { t } from '@/locale'
 import { CATEGORIES, itemsIn, type Item } from '@/shop/catalog'
+import { STATE } from '@/shop/state'
 import { ItemCard } from './ItemCard'
 import { Lightbox } from './Lightbox'
 import { ShopBar } from './ShopBar'
 import { Tabs } from './Tabs'
-import { useWallet } from './useWallet'
 import './Shop.css'
 
 /**
  * The shop, which is the whole app.
  *
- * Everything about money lives in `useWallet`; everything about what is on sale
- * lives in the catalogue. What is left here is which shelf is open and which
- * photograph is being looked at — the two pieces of state that are about the
- * screen rather than about the child.
+ * What the child has comes out of the repository (`src/shop/state.json`) and
+ * nothing here changes it, so the only state on this side is about the screen:
+ * which shelf is open, and which photograph is being looked at.
  */
 export function Shop() {
-  const wallet = useWallet()
   const [categoryId, setCategoryId] = useState(CATEGORIES[0]?.id ?? '')
   const [viewing, setViewing] = useState<Item | null>(null)
 
@@ -25,17 +24,12 @@ export function Shop() {
 
   return (
     <div className="shop">
-      <ShopBar
-        coins={wallet.coins}
-        onCoins={wallet.setCoins}
-        onClear={wallet.clearPurchases}
-        owned={wallet.boughtCount}
-      />
+      <ShopBar coins={STATE.coins} />
 
       <Tabs categories={CATEGORIES} activeId={categoryId} onPick={setCategoryId} />
 
-      {/* An engraved line between the shelf's name and the shelf, the way a
-          page of a book is ruled off from its heading. */}
+      {/* An engraved line between the shelf's name and the shelf, the way a page
+          of a book is ruled off from its heading. */}
       <hr className="rule" />
 
       <main className="shelf">
@@ -48,10 +42,8 @@ export function Shop() {
               <li key={item.id}>
                 <ItemCard
                   item={item}
-                  state={wallet.stateOf(item)}
-                  shortfall={wallet.shortfall(item)}
-                  onBuy={() => wallet.buy(item)}
-                  onRefund={() => wallet.refund(item)}
+                  state={stateOf(STATE, item)}
+                  shortfall={shortfall(STATE, item)}
                   onOpenPhoto={() => setViewing(item)}
                 />
               </li>

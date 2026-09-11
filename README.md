@@ -1,17 +1,42 @@
 # Лавка чудес
 
-The shop where the coins earned in [CogniQuest](https://github.com/dr-o-ne/cogniquest)
-get spent. A child of six does addition there, banks gold for every opponent he
-beats, and comes here to trade it for the toys sitting on the shelf in the real
-world — orc soldiers, photographed in the garden.
+The shelf the coins earned in [CogniQuest](https://github.com/dr-o-ne/cogniquest)
+are saved up for. A child of six does addition there, banks gold for every
+opponent he beats, and comes here to see what it would buy — orc soldiers,
+photographed in the garden, standing in their cases with a price under each.
 
 The interface is in Russian; the code, the comments and the docs are in English.
 
 ## State
 
-One shelf, «Армия», with four orcs at fifty coins each. The balance is typed in
-by hand — see **The two apps** below for why — and a purchase debits it and
-stamps the card. Everything is kept in the browser.
+One shelf, «Армия», with four orcs at fifty coins each.
+
+**The page never writes anything.** What the child has — how many coins, which
+toys are already his — lives in [`src/shop/state.json`](src/shop/state.json) and
+is edited by hand:
+
+```json
+{
+  "coins": 120,
+  "bought": ["orc-2"]
+}
+```
+
+Change it, commit, and the shelf says so once the deploy finishes. Every case is
+then one of three things, and the metal says which: **gold**, he has the coins
+for it; **cinnabar** with a padlock, and how many coins short he is; **emerald**
+with a seal, already his.
+
+There is no buy button, on purpose. A static site has nowhere to write except
+the tablet it happens to be open on, and a tablet quietly disagreeing with this
+file would be worse than no memory at all. The trade happens at the kitchen
+table; the file records what was agreed. (A version that could spend, with a
+wallet in `localStorage`, is in the history at `Add the shop` if it is ever
+wanted back.)
+
+A typo is caught before it is deployed: TypeScript reads the file, and
+`src/shop/state.test.ts` checks what it cannot — a negative or fractional
+balance, an id listed twice, or an id for a toy that does not exist.
 
 ## Running it
 
@@ -20,7 +45,7 @@ Needs **Node.js LTS**:
 ```powershell
 npm install
 npm run dev        # development, opens localhost
-npm test           # the wallet, the text pack, and the catalogue
+npm test           # the shelf rules, the text pack, the catalogue, the state file
 npm run typecheck  # types
 npm run build      # typecheck, then build
 npm run photos     # photos/ → public/, see below
@@ -53,16 +78,16 @@ MSYS rewrites anything that looks like a Unix path. Use PowerShell for this one.
 photos\<category>\     the originals off the phone — NOT in git
 public\<category>\     the web-sized .webp the site serves
 scripts\photos.mjs     one into the other
-src\core\              the wallet: pure TypeScript, no DOM, no storage
-src\adapters\          localStorage
-src\shop\              the catalogue — what is on the shelf, and for how much
+src\core\shelf.ts      given the state and a toy: his, within reach, or not yet
+src\shop\catalog.ts    what is on the shelf, and for how much
+src\shop\state.json    what the child has — the file you edit
 src\locale\            the text pack: every word the child sees
 src\ui\                React components and one stylesheet
 ```
 
-`src/core` knows nothing of the outside world — no browser, no React, no saves.
-That is what lets every rule about affording, buying, double-buying and refunding
-be a test that runs in a second. CogniQuest enforces the same boundary with a
+`src/core` knows nothing of the outside world — no browser, no React, no
+catalogue. That is what lets the rules about reaching a price be a handful of
+tests that run in a second. CogniQuest enforces the same boundary with a
 `tsconfig.core.json` and an import-graph test; with one module on this side of
 the line, that machinery would cost more than it caught. Worth adding the day
 there is a second.
@@ -113,20 +138,6 @@ needs before any JavaScript runs.
 
 Coin counts go through `t.coins()`, because «1 монета, 2 монеты, 5 монет» is
 grammar and grammar is language.
-
-## The two apps
-
-CogniQuest is published at `https://dr-o-ne.github.io/cogniquest/` and this shop
-at `https://cogni-quest.github.io/magic-shop/`. `localStorage` is partitioned by
-**origin** — scheme, host and port, never the path — so those are two different
-hosts and two stores that cannot see one another. There is no automatic sync to
-be had, which is why the balance is typed in.
-
-Two things keep the cheap version of a real sync open. The keys are namespaced
-(`magicshop:wallet`, against CogniQuest's `cogniquest:profile`), and `setCoins`
-is the only way coins ever enter the wallet — so if CogniQuest is one day served
-from the same account, reading its `gold` and offering «взять монеты из
-CogniQuest» is one more caller of a function that already exists.
 
 ## Stack
 

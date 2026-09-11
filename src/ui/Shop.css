@@ -120,8 +120,10 @@
     justify-items: center;
   }
 
-  .shopbar__crest {
+  .shopbar__crest,
+  .purse {
     grid-column: 1;
+    justify-self: center;
   }
 }
 
@@ -140,31 +142,20 @@
   text-shadow: 0 0 26px rgba(217, 164, 65, 0.28);
 }
 
-.shopbar__right {
-  grid-column: 3;
-  justify-self: end;
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-}
-
-@media (max-width: 34rem) {
-  .shopbar__right {
-    grid-column: 1;
-    justify-self: center;
-  }
-}
-
 /* ── The purse ───────────────────────────────────────────────────────── */
 
+/* A plaque, not a control: the balance is recorded in the repository and read
+   here. Nothing on this page can change it, so nothing about it invites a tap.
+   `justify-self` matters — a grid item fills its track otherwise, and a plaque
+   the width of a third of the bar reads as a banner. */
 .purse {
+  grid-column: 3;
+  justify-self: end;
   display: inline-flex;
   align-items: baseline;
   gap: 0.4rem;
-  /* 44px, the smallest thing a small finger hits reliably. Everything tappable
-     on this screen clears it. */
-  min-height: 2.75rem;
-  padding: 0.15rem 0.9rem;
+  margin: 0;
+  padding: 0.25rem 0.9rem;
   border: 1px solid var(--zoloto-dim);
   background: linear-gradient(180deg, rgba(217, 164, 65, 0.1), rgba(0, 0, 0, 0.3));
   color: var(--zoloto-lit);
@@ -172,75 +163,11 @@
   font-size: clamp(1.4rem, 5vw, 1.9rem);
   font-weight: 700;
   line-height: 1.3;
-  cursor: pointer;
-  transition: border-color 0.18s ease, box-shadow 0.18s ease;
-}
-
-.purse:hover,
-.purse--editing {
-  border-color: var(--zoloto);
-  box-shadow: 0 0 22px -6px var(--zoloto);
-}
-
-.purse--editing {
-  cursor: text;
+  text-shadow: 0 0 20px rgba(217, 164, 65, 0.3);
 }
 
 .purse__coin {
   font-size: 0.75em;
-}
-
-/* Both states are the same width, so the sign does not jump between 9 and 10. */
-.purse__amount,
-.purse__input {
-  min-width: 2.5ch;
-  text-align: right;
-}
-
-.purse__input {
-  width: 3.5ch;
-  padding: 0;
-  border: none;
-  background: none;
-  color: inherit;
-  font: inherit;
-  outline: none;
-}
-
-/* ── Clearing the shelf ──────────────────────────────────────────────── */
-
-.reset__start,
-.reset__no,
-.reset__yes {
-  padding: 0.4rem 0.8rem;
-  border: 1px solid var(--zoloto-dim);
-  background: none;
-  color: var(--pergament-dim);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: color 0.18s ease, border-color 0.18s ease;
-}
-
-.reset__start:hover,
-.reset__no:hover {
-  color: var(--pergament);
-  border-color: var(--zoloto);
-}
-
-.reset__yes {
-  border-color: var(--kinovar);
-  color: var(--kinovar);
-}
-
-.reset__ask {
-  color: var(--pergament-dim);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
 }
 
 /* ── The shelves ─────────────────────────────────────────────────────── */
@@ -364,11 +291,6 @@
   }
 }
 
-.item--nudged {
-  animation: shake 0.3s;
-}
-
-/* ── The picture in its case ─────────────────────────────────────────── */
 
 .item__photo-btn {
   display: block;
@@ -444,38 +366,37 @@
   font-size: 0.62em;
 }
 
-/* ── Buying ──────────────────────────────────────────────────────────── */
+/* ── Where the case stands ───────────────────────────────────────────── */
 
-.item__action {
+/* One height whatever the mark says, so a shelf of cases lines up — including
+   the bought ones, where the mark is empty because the seal already said it. */
+.item__mark {
   display: grid;
   place-items: center;
   width: 100%;
-  min-height: 2.75rem;
+  min-height: 2.4rem;
   margin-top: auto;
   padding-top: 0.5rem;
 }
 
-.item__buy {
-  min-height: 2.75rem;
-  padding: 0.5rem 1.4rem;
-  border: 1px solid var(--zoloto);
-  background: linear-gradient(180deg, rgba(217, 164, 65, 0.18), rgba(217, 164, 65, 0.05));
-  color: var(--zoloto-lit);
+.mark {
+  padding: 0.45rem 1.1rem;
+  border: 1px solid currentcolor;
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  cursor: pointer;
-  transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.1s ease;
 }
 
-.item__buy:hover {
-  background: linear-gradient(180deg, rgba(217, 164, 65, 0.3), rgba(217, 164, 65, 0.1));
-  box-shadow: 0 0 26px -6px var(--zoloto);
+.mark--ready {
+  color: var(--zoloto-lit);
+  background: linear-gradient(180deg, rgba(217, 164, 65, 0.18), rgba(217, 164, 65, 0.05));
 }
 
-.item__buy:active {
-  transform: translateY(1px);
+.mark--short {
+  border-color: rgba(183, 51, 42, 0.55);
+  color: var(--kinovar);
+  letter-spacing: 0.12em;
 }
 
 /* What the child can pay for right now, lit from behind. The one thing on the
@@ -529,21 +450,6 @@
   text-shadow: none;
 }
 
-.item__buy--short {
-  border-color: rgba(183, 51, 42, 0.55);
-  background: none;
-  color: var(--kinovar);
-  letter-spacing: 0.12em;
-  cursor: default;
-}
-
-.item__buy--short:hover,
-.item__buy--short:active {
-  background: none;
-  box-shadow: none;
-  transform: none;
-}
-
 /* ── Already his ─────────────────────────────────────────────────────── */
 
 .item--bought {
@@ -586,24 +492,6 @@
     scale: 2.4;
     rotate: 10deg;
   }
-}
-
-.item__undo {
-  padding: 0.4rem 0.8rem;
-  border: none;
-  background: none;
-  color: var(--pergament-dim);
-  font-family: var(--mono);
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  cursor: pointer;
-}
-
-.item__undo:hover {
-  color: var(--pergament);
 }
 
 /* ── The photograph, full size ───────────────────────────────────────── */
@@ -678,14 +566,5 @@
   from {
     opacity: 0;
     transform: scale(0.9);
-  }
-}
-
-@keyframes shake {
-  25% {
-    transform: translateX(-5px);
-  }
-  75% {
-    transform: translateX(5px);
   }
 }
