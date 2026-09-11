@@ -1,49 +1,90 @@
-/* THE SHOP.
+/* THE SHOP — a lacquer box with the lid off.
  *
- * CogniQuest's palette and its habits — color-mix instead of rgba, borders in
- * the entity's own colour, pills and rounded boxes, depth from a lift — but
- * turned up, because this screen has a different job. Next door the child is
- * working, and the restraint is there so that arithmetic is the loudest thing
- * on the page. Here he is spending what the working earned, and the screen is
- * the reward: gold, parchment, frames, a seal on what is already his.
+ * Black ground, gold hairlines, a second line inside the first, a vignette in
+ * every corner. Square corners throughout: a lacquer box has edges, and a
+ * rounded pill would drop the whole thing back into an app.
  *
- * Everything decorative is drawn in CSS. No texture files, no icon font, no web
- * font — the site has to open on a tablet over someone's phone tethering.
+ * Three metals do all the signalling, and nothing else is allowed to use them:
+ *
+ *   gold      what a thing costs, and what the child can take today
+ *   cinnabar  what he cannot reach yet
+ *   emerald   what is already his
+ *
+ * Everything decorative is drawn in CSS or in four inline paths. No textures,
+ * no icon font — the site has to open on a tablet over someone's tethering.
  */
 
-/* ── The room ────────────────────────────────────────────────────────── */
-
 .shop {
-  --ink: var(--fg);
-  /* The one display face. A serif does more for «treasure» than any amount of
-     ornament, and Georgia is on every machine this will ever open on. */
-  --display: Georgia, 'Iowan Old Style', 'Times New Roman', serif;
-  /* Warm shadow for the gold, so a glow reads as lamplight and not as a border. */
-  --glow: color-mix(in srgb, var(--gold) 55%, transparent);
-
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  /* Two lamps and a floor: a warm pool behind the shelf, a cooler one behind the
-     sign, over a parchment wash. Fixed, so scrolling the shelf does not drag the
-     room along with it. */
+  /* Lamplight over the counter, falling off into soot at the edges. Fixed, so
+     scrolling the shelf does not drag the room along with it. */
   background:
-    radial-gradient(60rem 40rem at 20% -10%, color-mix(in srgb, var(--gold) 22%, transparent), transparent 70%),
-    radial-gradient(50rem 35rem at 95% 15%, color-mix(in srgb, #8f4028 18%, transparent), transparent 70%),
-    var(--bg);
+    radial-gradient(120% 80% at 50% -10%, #1b1520 0%, rgba(11, 10, 12, 0.97) 55%, var(--lak) 100%);
   background-attachment: fixed;
 }
 
-/* One focus ring for the whole shop, in the action colour, drawn outside
-   whatever it lands on. Chrome's default is a hard black rectangle, and on a
-   card it looks like damage. A mouse click leaves no ring; a Tab key does. */
+/* One focus ring for the whole shop, in the lit gold. Chrome's default is a hard
+   black rectangle, and on black lacquer it is invisible. A mouse click leaves no
+   ring; a Tab key does. */
 .shop :focus-visible {
-  outline: 3px solid var(--action);
+  outline: 2px solid var(--zoloto-lit);
   outline-offset: 3px;
 }
 
 .shop :focus:not(:focus-visible) {
   outline: none;
+}
+
+/* A hairline that fades out at both ends, the way an engraved rule does. */
+.rule {
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  border: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--zoloto-dim) 18%,
+    var(--zoloto) 50%,
+    var(--zoloto-dim) 82%,
+    transparent
+  );
+}
+
+/* The vignettes. One drawing turned four ways — see Corners.tsx. */
+.corner {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  color: var(--zoloto);
+  opacity: 0.8;
+  pointer-events: none;
+  transition: color 0.18s ease, opacity 0.18s ease;
+}
+
+.corner--tl {
+  top: -1px;
+  left: -1px;
+}
+
+.corner--tr {
+  top: -1px;
+  right: -1px;
+  transform: scaleX(-1);
+}
+
+.corner--bl {
+  bottom: -1px;
+  left: -1px;
+  transform: scaleY(-1);
+}
+
+.corner--br {
+  bottom: -1px;
+  right: -1px;
+  transform: scale(-1);
 }
 
 /* ── The sign over the door ──────────────────────────────────────────── */
@@ -52,120 +93,112 @@
   position: sticky;
   top: 0;
   z-index: 2;
-  display: flex;
-  flex-wrap: wrap;
+  /* Three columns, the outer two equal: that is what puts the name in the middle
+     of the BAR rather than in the middle of what is left over once the purse has
+     taken its place. The first column stays empty and earns its keep. */
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem 1rem;
-  padding: 0.7rem 1.1rem 0.8rem;
-  border-bottom: 3px solid color-mix(in srgb, var(--gold) 45%, transparent);
-  border-radius: 0 0 22px 22px;
-  /* Opaque and slightly darker than the room, like a board hung on the wall.
-     Not translucent: a blurred strip of photographs would compete with the
-     photographs. */
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--gold) 14%, var(--bg)),
-    color-mix(in srgb, var(--gold) 6%, var(--bg))
-  );
-  box-shadow: 0 4px 18px color-mix(in srgb, #000 14%, transparent);
+  gap: 0.6rem 1rem;
+  padding: 0.9rem clamp(0.9rem, 3vw, 1.6rem) 0.8rem;
+  border-bottom: 1px solid rgba(217, 164, 65, 0.28);
+  /* Opaque. A translucent bar would let a photograph scroll through the shop's
+     own name. */
+  background: linear-gradient(180deg, #16121a 0%, #0d0b10 100%);
 }
 
-.shopbar__left,
-.shopbar__right {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+.shopbar__crest {
+  grid-column: 2;
+  text-align: center;
 }
 
-.shopbar__mark {
-  font-size: 2rem;
-  line-height: 1;
-  /* The shopkeeper stands in lamplight like everything else on his sign. */
-  filter: drop-shadow(0 2px 4px color-mix(in srgb, var(--gold) 60%, transparent));
+/* Below about 34rem the purse and the name cannot share a line without the name
+   shrinking to nothing, so they stack and both centre. */
+@media (max-width: 34rem) {
+  .shopbar {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .shopbar__crest {
+    grid-column: 1;
+  }
 }
 
 .shopbar__title {
   margin: 0;
   font-family: var(--display);
-  font-size: clamp(1.3rem, 4.5vw, 1.7rem);
-  font-weight: 700;
+  font-size: clamp(1.7rem, 6vw, 2.6rem);
+  font-weight: 400;
+  /* Ruslan Display draws well above its em box — at a line-height of 1 the
+     crowns of Л and Ч are clipped by the bar. */
+  line-height: 1.2;
   letter-spacing: 0.02em;
-  color: color-mix(in srgb, var(--gold) 55%, var(--ink));
+  color: var(--zoloto);
+  /* Gold leaf catches the lamp. The glow is what stops the title reading as flat
+     yellow text on black. */
+  text-shadow: 0 0 26px rgba(217, 164, 65, 0.28);
 }
 
-.shopbar__tally {
+.shopbar__right {
+  grid-column: 3;
+  justify-self: end;
   display: flex;
   align-items: center;
-  gap: 0.45rem;
-  margin: 0.1rem 0 0;
-  color: var(--muted);
-  font-size: 0.8rem;
+  gap: 0.7rem;
 }
 
-/* A row of coins, filling up. The number beside it says the same thing, but the
-   row is the thing a six-year-old actually watches. */
-.tally {
-  display: inline-flex;
-  gap: 0.2rem;
-}
-
-.tally__pip {
-  width: 0.55rem;
-  height: 0.55rem;
-  border: 1px solid color-mix(in srgb, var(--gold) 50%, transparent);
-  border-radius: 999px;
-}
-
-.tally__pip--on {
-  background: var(--gold);
-  box-shadow: 0 0 6px var(--glow);
+@media (max-width: 34rem) {
+  .shopbar__right {
+    grid-column: 1;
+    justify-self: center;
+  }
 }
 
 /* ── The purse ───────────────────────────────────────────────────────── */
 
 .purse {
   display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
+  align-items: baseline;
+  gap: 0.4rem;
   /* 44px, the smallest thing a small finger hits reliably. Everything tappable
      on this screen clears it. */
   min-height: 2.75rem;
-  padding: 0.2rem 1rem;
-  border: 2px solid color-mix(in srgb, var(--gold) 70%, transparent);
-  border-radius: 999px;
-  /* A struck coin: light off the top edge, shadow pooling at the bottom. */
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--gold) 26%, var(--bg)),
-    color-mix(in srgb, var(--gold) 12%, var(--bg))
-  );
-  box-shadow:
-    inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent),
-    0 2px 10px color-mix(in srgb, var(--gold) 30%, transparent);
-  color: color-mix(in srgb, var(--gold) 70%, var(--ink));
-  font: inherit;
-  font-family: var(--display);
-  font-size: clamp(1.3rem, 5vw, 1.7rem);
+  padding: 0.15rem 0.9rem;
+  border: 1px solid var(--zoloto-dim);
+  background: linear-gradient(180deg, rgba(217, 164, 65, 0.1), rgba(0, 0, 0, 0.3));
+  color: var(--zoloto-lit);
+  font-family: var(--serif);
+  font-size: clamp(1.4rem, 5vw, 1.9rem);
   font-weight: 700;
+  line-height: 1.3;
   cursor: pointer;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.purse:hover,
+.purse--editing {
+  border-color: var(--zoloto);
+  box-shadow: 0 0 22px -6px var(--zoloto);
 }
 
 .purse--editing {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 4px var(--glow);
   cursor: text;
+}
+
+.purse__coin {
+  font-size: 0.75em;
 }
 
 /* Both states are the same width, so the sign does not jump between 9 and 10. */
 .purse__amount,
 .purse__input {
-  min-width: 3ch;
+  min-width: 2.5ch;
   text-align: right;
 }
 
 .purse__input {
-  width: 4ch;
+  width: 3.5ch;
   padding: 0;
   border: none;
   background: none;
@@ -177,37 +210,37 @@
 /* ── Clearing the shelf ──────────────────────────────────────────────── */
 
 .reset__start,
-.reset__no {
-  padding: 0.35rem 0.8rem;
-  border: 1px solid color-mix(in srgb, var(--ink) 18%, transparent);
-  border-radius: 999px;
+.reset__no,
+.reset__yes {
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--zoloto-dim);
   background: none;
-  color: var(--muted);
-  font: inherit;
-  font-size: 0.8rem;
+  color: var(--pergament-dim);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease;
 }
 
 .reset__start:hover,
 .reset__no:hover {
-  color: var(--ink);
-}
-
-.reset__ask {
-  color: var(--muted);
-  font-size: 0.8rem;
+  color: var(--pergament);
+  border-color: var(--zoloto);
 }
 
 .reset__yes {
-  padding: 0.35rem 0.8rem;
-  border: none;
-  border-radius: 999px;
-  background: var(--danger);
-  color: #fff;
-  font: inherit;
-  font-size: 0.8rem;
-  font-weight: 700;
-  cursor: pointer;
+  border-color: var(--kinovar);
+  color: var(--kinovar);
+}
+
+.reset__ask {
+  color: var(--pergament-dim);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 /* ── The shelves ─────────────────────────────────────────────────────── */
@@ -215,7 +248,7 @@
 .tabs {
   display: flex;
   gap: 0.6rem;
-  padding: 1rem 1rem 0;
+  padding: 1.1rem clamp(0.9rem, 3vw, 1.6rem) 0;
   /* Sideways rather than wrapped: six shelves on a phone should stay one row to
      scroll, not become a wall to read. */
   overflow-x: auto;
@@ -229,39 +262,34 @@
 .tab {
   display: inline-flex;
   align-items: center;
-  gap: 0.45rem;
+  gap: 0.5rem;
   flex: 0 0 auto;
   min-height: 2.75rem;
-  padding: 0.4rem 1.3rem;
-  border: 2px solid color-mix(in srgb, var(--ink) 12%, transparent);
-  /* A pressable slab: the bottom edge is thicker, and it thins when pressed. */
-  border-bottom-width: 4px;
-  border-radius: 14px;
-  background: color-mix(in srgb, var(--ink) 4%, var(--bg));
-  color: var(--muted);
-  font: inherit;
-  font-family: var(--display);
-  font-size: 1.05rem;
-  font-weight: 700;
+  padding: 0.4rem 1.2rem;
+  border: 1px solid rgba(217, 164, 65, 0.22);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.28));
+  color: var(--pergament-dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: transform 0.12s ease, color 0.15s ease, border-color 0.15s ease;
+  transition: color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
-.tab:active {
-  transform: translateY(2px);
-  border-bottom-width: 2px;
+.tab:hover {
+  color: var(--pergament);
 }
 
 .tab--active {
-  border-color: var(--card);
-  background: color-mix(in srgb, var(--card) 14%, var(--bg));
-  /* Pulled towards the text colour rather than used neat: one hex has to read on
-     an off-white page and on a near-black one. */
-  color: color-mix(in srgb, var(--card) 65%, var(--ink));
+  border-color: var(--f, var(--zoloto));
+  color: var(--f, var(--zoloto));
+  box-shadow: inset 0 -2px 0 -1px var(--f, var(--zoloto));
 }
 
 .tab__icon {
-  font-size: 1.2rem;
+  font-size: 1rem;
+  letter-spacing: 0;
 }
 
 .shelf {
@@ -269,25 +297,24 @@
 }
 
 .shelf__empty {
-  padding: 3rem 1rem;
-  color: var(--muted);
+  padding: 4rem 1rem;
+  color: var(--pergament-dim);
+  font-style: italic;
   text-align: center;
-  font-family: var(--display);
-  font-size: 1.2rem;
 }
 
 .grid {
   display: grid;
   /* `auto-fit`, so four toys spread across a desktop instead of huddling into
-     the left third — the empty tracks collapse and the cards share what is
-     there. At 360px it still gives two columns: 1rem of padding each side and a
-     1rem gutter leave 156px a card, and 9.5rem is 152. Browsing a shop one card
-     at a time is scrolling, not shopping. */
+     the left third — empty tracks collapse and the cards share what is there.
+     At 360px it still gives two columns: a 1rem gutter and 0.9rem of padding
+     each side leave about 155px a card, and 9.5rem is 152. Browsing a shop one
+     card at a time is scrolling, not shopping. */
   grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
-  gap: 1.1rem;
-  max-width: 64rem;
+  gap: clamp(0.9rem, 2.5vw, 1.4rem);
+  max-width: 66rem;
   margin: 0 auto;
-  padding: 1.2rem 1rem 3rem;
+  padding: clamp(1.1rem, 3vw, 1.8rem) clamp(0.9rem, 3vw, 1.6rem) 3.5rem;
   list-style: none;
 }
 
@@ -295,42 +322,45 @@
   display: flex;
 }
 
-/* ── A slot on the shelf ─────────────────────────────────────────────── */
+/* ── A case on the shelf ─────────────────────────────────────────────── */
 
 .item {
+  --f: var(--zoloto);
+
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.55rem;
+  gap: 0.4rem;
   width: 100%;
-  /* Wide columns on a desktop would stretch a card to 250px and the shop would
+  /* Wide columns on a desktop would stretch a case to 250px and the shop would
      start to look like a spreadsheet. A toy keeps a toy's size and centres. */
   max-width: 15rem;
   margin: 0 auto;
-  padding: 0.85rem 0.7rem 1rem;
-  border: 3px solid color-mix(in srgb, var(--card) 50%, transparent);
-  border-radius: 22px;
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--card) 10%, var(--bg)),
-    color-mix(in srgb, var(--card) 4%, var(--bg))
-  );
-  /* A second, thinner frame inside the first — the way a case has a case. */
-  box-shadow:
-    inset 0 0 0 2px color-mix(in srgb, var(--bg) 70%, transparent),
-    0 6px 16px color-mix(in srgb, #000 12%, transparent);
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  padding: 0.9rem 0.8rem 1rem;
+  border: 1px solid rgba(217, 164, 65, 0.3);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(0, 0, 0, 0.3));
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+/* The second line inside the first — the thing that makes a panel read as the
+   lid of a box rather than as a div. */
+.item::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(217, 164, 65, 0.16);
+  pointer-events: none;
 }
 
 /* The lift is a mouse thing. On the tablet this is actually used on, the same
-   feedback has to come from the press. */
-/* The lift only. The frame's colour is the card's state — owned, affordable, out
-   of reach — and hovering does not change the state, so it must not change the
-   colour: a bought card going brick-red under the cursor reads as «undone». */
+   feedback has to come from the press. The frame's colour is the card's STATE,
+   so hovering may deepen it but must never change which metal it is. */
 @media (hover: hover) {
   .item:hover {
-    transform: translateY(-5px);
+    transform: translateY(-4px);
+    border-color: var(--f);
+    box-shadow: 0 16px 44px -20px var(--f);
   }
 }
 
@@ -338,16 +368,13 @@
   animation: shake 0.3s;
 }
 
-/* ── The portrait window ─────────────────────────────────────────────── */
+/* ── The picture in its case ─────────────────────────────────────────── */
 
 .item__photo-btn {
   display: block;
   width: 100%;
   padding: 0;
   border: none;
-  /* Matches the frame inside it, so the focus ring follows the picture's corners
-     rather than boxing them. */
-  border-radius: 16px;
   background: none;
   cursor: zoom-in;
 }
@@ -355,13 +382,9 @@
 .item__frame {
   position: relative;
   display: block;
-  /* Holds the zoom in. Without it a scaled photograph spills over the card. */
+  /* Holds the zoom in. Without it a scaled photograph spills over the case. */
   overflow: hidden;
-  border-radius: 16px;
-  /* Glass over a picture in a case: a bright edge at the top, dark at the foot. */
-  box-shadow:
-    inset 0 2px 6px color-mix(in srgb, #000 30%, transparent),
-    inset 0 -1px 0 color-mix(in srgb, #fff 25%, transparent);
+  border: 1px solid rgba(217, 164, 65, 0.25);
 }
 
 .photo {
@@ -374,8 +397,8 @@
      a garden with the figure well off in the frame, and an honest fit would give
      a card of pine needles with a green speck in it. */
   object-fit: cover;
-  background: color-mix(in srgb, var(--card) 14%, var(--bg));
-  transition: filter 0.2s ease, transform 0.25s ease;
+  background: #0f0d12;
+  transition: filter 0.25s ease;
 }
 
 .photo--fallback {
@@ -384,54 +407,41 @@
   font-size: 3rem;
 }
 
-@media (hover: hover) {
-  /* A half-step closer on hover — the toy leans out of its case. */
-  .item:hover .photo {
-    filter: brightness(1.04);
-  }
-}
-
 .item__name {
-  margin: 0;
-  font-family: var(--display);
-  /* A shade larger than CogniQuest's card name: this reader is still sounding
-     words out. */
-  font-size: 1.15rem;
+  margin: 0.15rem 0 0;
+  font-family: var(--serif);
+  /* Larger than the body: this reader is still sounding words out. */
+  font-size: 1.1rem;
   font-weight: 700;
+  line-height: 1.25;
   text-align: center;
+  color: var(--pergament);
 }
 
 .item__note {
-  margin: -0.35rem 0 0;
-  color: var(--muted);
+  margin: 0;
+  color: var(--pergament-dim);
   font-size: 0.8rem;
+  font-style: italic;
   text-align: center;
 }
 
 /* ── The price ───────────────────────────────────────────────────────── */
 
-/* Knowingly louder than CogniQuest, which keeps its numbers bare — there, a pill
-   around a digit would have read as something to press on a screen full of
-   arithmetic. Here the price IS a token, struck like the coin inside it, and it
-   is what the whole screen is about. */
 .item__price {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   gap: 0.3rem;
-  padding: 0.2rem 0.85rem;
-  border: 2px solid color-mix(in srgb, var(--gold) 60%, transparent);
-  border-radius: 999px;
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--gold) 24%, var(--bg)),
-    color-mix(in srgb, var(--gold) 10%, var(--bg))
-  );
-  box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 50%, transparent);
-  color: color-mix(in srgb, var(--gold) 72%, var(--ink));
-  font-family: var(--display);
-  font-size: 1.2rem;
+  font-family: var(--serif);
+  font-size: 1.5rem;
   font-weight: 700;
-  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+  color: var(--zoloto-lit);
+  text-shadow: 0 0 18px rgba(217, 164, 65, 0.3);
+}
+
+.item__coin {
+  font-size: 0.62em;
 }
 
 /* ── Buying ──────────────────────────────────────────────────────────── */
@@ -439,67 +449,65 @@
 .item__action {
   display: grid;
   place-items: center;
+  width: 100%;
   min-height: 2.75rem;
   margin-top: auto;
+  padding-top: 0.5rem;
 }
 
 .item__buy {
   min-height: 2.75rem;
-  padding: 0.45rem 1.5rem;
-  border: none;
-  border-radius: 999px;
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, #fff 22%, var(--action)),
-    var(--action)
-  );
-  /* The slab under the button, so pressing it has somewhere to go. */
-  box-shadow:
-    0 4px 0 color-mix(in srgb, #000 28%, var(--action)),
-    0 6px 14px color-mix(in srgb, var(--action) 40%, transparent);
-  color: #fff;
-  font: inherit;
-  font-family: var(--display);
-  font-size: 1.05rem;
-  font-weight: 700;
+  padding: 0.5rem 1.4rem;
+  border: 1px solid var(--zoloto);
+  background: linear-gradient(180deg, rgba(217, 164, 65, 0.18), rgba(217, 164, 65, 0.05));
+  color: var(--zoloto-lit);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
+  transition: background 0.18s ease, box-shadow 0.18s ease, transform 0.1s ease;
 }
 
 .item__buy:hover {
-  transform: translateY(-2px);
+  background: linear-gradient(180deg, rgba(217, 164, 65, 0.3), rgba(217, 164, 65, 0.1));
+  box-shadow: 0 0 26px -6px var(--zoloto);
 }
 
 .item__buy:active {
-  transform: translateY(4px);
-  box-shadow: 0 0 0 color-mix(in srgb, #000 28%, var(--action));
+  transform: translateY(1px);
 }
 
 /* What the child can pay for right now, lit from behind. The one thing on the
    shelf that moves by itself — and only ever this, so it means something. */
 .item--affordable {
-  border-color: color-mix(in srgb, var(--gold) 70%, transparent);
-  animation: within-reach 2.4s ease-in-out infinite;
+  border-color: rgba(217, 164, 65, 0.55);
+  animation: within-reach 3s ease-in-out infinite;
 }
 
 @keyframes within-reach {
   50% {
-    box-shadow:
-      inset 0 0 0 2px color-mix(in srgb, var(--bg) 70%, transparent),
-      0 6px 16px color-mix(in srgb, #000 12%, transparent),
-      0 0 22px var(--glow);
+    box-shadow: 0 0 34px -14px var(--zoloto);
   }
 }
 
 /* ── Out of reach ────────────────────────────────────────────────────── */
 
 .item--short {
-  border-color: color-mix(in srgb, var(--ink) 14%, transparent);
-  background: color-mix(in srgb, var(--ink) 4%, var(--bg));
+  --f: var(--kinovar);
+  border-color: rgba(232, 223, 204, 0.1);
 }
 
+.item--short .corner {
+  color: var(--pergament-dim);
+  opacity: 0.3;
+}
+
+/* Drained, not hidden. Far enough down that «not yet» reads across the room,
+   far enough up that the toy is still worth saving for — which is the whole
+   point of showing it at all. */
 .item--short .photo {
-  filter: grayscale(0.75) brightness(0.85);
+  filter: grayscale(0.8) brightness(0.78);
 }
 
 .item__lock {
@@ -507,93 +515,95 @@
   inset: 0;
   display: grid;
   place-items: center;
-  font-size: 2.4rem;
-  /* Dark enough that the padlock reads at a glance, light enough that the toy
-     behind it is still worth wanting. */
-  background: color-mix(in srgb, #000 28%, transparent);
-  filter: drop-shadow(0 2px 5px color-mix(in srgb, #000 60%, transparent));
+  font-size: 2.2rem;
+  background: rgba(11, 10, 12, 0.35);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.7));
 }
 
 .item--short .item__name {
-  color: var(--muted);
+  color: var(--pergament-dim);
 }
 
 .item--short .item__price {
-  border-color: color-mix(in srgb, var(--short) 50%, transparent);
-  background: none;
-  box-shadow: none;
-  color: var(--short);
+  color: var(--pergament-dim);
+  text-shadow: none;
 }
 
 .item__buy--short {
+  border-color: rgba(183, 51, 42, 0.55);
   background: none;
-  border: 2px dashed color-mix(in srgb, var(--short) 55%, transparent);
-  box-shadow: none;
-  color: var(--short);
-  font-size: 0.9rem;
+  color: var(--kinovar);
+  letter-spacing: 0.12em;
   cursor: default;
 }
 
 .item__buy--short:hover,
 .item__buy--short:active {
-  transform: none;
+  background: none;
   box-shadow: none;
+  transform: none;
 }
 
-/* ── Owned ───────────────────────────────────────────────────────────── */
+/* ── Already his ─────────────────────────────────────────────────────── */
 
 .item--bought {
-  border-color: var(--owned);
-  background: linear-gradient(
-    to bottom,
-    color-mix(in srgb, var(--owned) 16%, var(--bg)),
-    color-mix(in srgb, var(--owned) 6%, var(--bg))
-  );
+  --f: var(--izumrud);
+  border-color: rgba(78, 140, 90, 0.6);
+  background: linear-gradient(180deg, rgba(78, 140, 90, 0.12), rgba(0, 0, 0, 0.32));
 }
 
-/* A seal in wax, pressed across the corner of the case. */
+.item--bought::after {
+  border-color: rgba(78, 140, 90, 0.25);
+}
+
+.item--bought .corner {
+  color: var(--izumrud);
+}
+
+/* Pressed across the corner of the case, like a seal in wax. */
 .item__seal {
   position: absolute;
-  top: 0.9rem;
-  right: -0.6rem;
-  padding: 0.25rem 0.9rem;
-  border: 2px solid color-mix(in srgb, #fff 35%, var(--owned));
-  border-radius: 999px;
-  background: var(--owned);
-  box-shadow: 0 3px 10px color-mix(in srgb, var(--owned) 55%, transparent);
-  color: #fff;
-  font-family: var(--display);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  rotate: -8deg;
+  top: 0.85rem;
+  right: -0.4rem;
+  z-index: 1;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--izumrud);
+  background: #10281a;
+  color: #b9e3c2;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  rotate: -6deg;
+  box-shadow: 0 6px 22px -8px var(--izumrud);
   animation: stamped 0.4s cubic-bezier(0.2, 1.4, 0.5, 1);
 }
 
-/* Pressed down onto the card, rather than grown out of it. */
+/* Pressed down onto the case, rather than grown out of it. */
 @keyframes stamped {
   from {
     opacity: 0;
-    scale: 2.2;
-    rotate: 8deg;
+    scale: 2.4;
+    rotate: 10deg;
   }
 }
 
 .item__undo {
   padding: 0.4rem 0.8rem;
   border: none;
-  border-radius: 999px;
   background: none;
-  color: var(--muted);
-  font: inherit;
-  font-size: 0.8rem;
+  color: var(--pergament-dim);
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-underline-offset: 4px;
   cursor: pointer;
 }
 
 .item__undo:hover {
-  color: var(--ink);
+  color: var(--pergament);
 }
 
 /* ── The photograph, full size ───────────────────────────────────────── */
@@ -604,38 +614,41 @@
   z-index: 10;
   display: grid;
   place-items: center;
-  padding: 1rem;
-  background: color-mix(in srgb, #000 82%, transparent);
+  padding: 1.2rem;
+  background: rgba(6, 5, 7, 0.92);
   animation: fade-in 0.15s ease;
   cursor: zoom-out;
 }
 
 .lightbox__box {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 0.8rem;
+  gap: 0.9rem;
   max-width: min(92vw, 32rem);
+  padding: 0.8rem;
+  border: 1px solid var(--zoloto-dim);
+  background: linear-gradient(180deg, #131016, #0c0a0e);
   animation: pop-in 0.25s cubic-bezier(0.2, 1.4, 0.5, 1);
 }
 
 .photo--full {
   width: auto;
   max-width: 100%;
-  max-height: 74vh;
+  max-height: 70vh;
   aspect-ratio: auto;
   /* Whole and uncropped — the framing on the card is a compromise for the grid,
      and this is the view that repays opening it. */
   object-fit: contain;
-  border: 3px solid color-mix(in srgb, var(--gold) 70%, transparent);
-  border-radius: 18px;
+  border: 1px solid rgba(217, 164, 65, 0.25);
   background: none;
 }
 
 .lightbox__name {
   margin: 0;
-  color: #fff;
-  font-family: var(--display);
-  font-size: 1.3rem;
+  color: var(--zoloto-lit);
+  font-family: var(--serif);
+  font-size: 1.2rem;
   font-weight: 700;
   text-align: center;
 }
@@ -646,11 +659,10 @@
   right: 1rem;
   width: 2.75rem;
   height: 2.75rem;
-  border: none;
-  border-radius: 999px;
-  background: color-mix(in srgb, #fff 18%, transparent);
-  color: #fff;
-  font-size: 1.2rem;
+  border: 1px solid var(--zoloto-dim);
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--zoloto-lit);
+  font-size: 1.1rem;
   cursor: pointer;
 }
 
@@ -665,7 +677,7 @@
 @keyframes pop-in {
   from {
     opacity: 0;
-    transform: scale(0.85);
+    transform: scale(0.9);
   }
 }
 

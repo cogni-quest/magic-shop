@@ -63,14 +63,15 @@ export interface Item {
 // ─────────────────────────────────────────────────────────────────────────
 // CATEGORIES — id · emoji · colour. The tab bar is this table, in this order.
 //
-// Brick rather than the green of CogniQuest's first level, though an army of
-// orcs invites green: the toys themselves are bright green plastic, and a green
-// frame around a green figure is a frame you cannot see.
+// Gold, because on this shelf the metal already means something: gold is what a
+// thing costs, emerald is what is already his, cinnabar is what he cannot reach
+// yet. A category's colour is the fourth voice and has to stay out of those
+// three — which the next one along will have to respect too.
 // ─────────────────────────────────────────────────────────────────────────
 
 type CategoryRow = readonly [id: string, icon: string, color: string]
 
-const CATEGORIES_TABLE: readonly CategoryRow[] = [['army', '⚔️', '#8f4028']]
+const CATEGORIES_TABLE: readonly CategoryRow[] = [['army', '⚔', '#d9a441']]
 
 // ─────────────────────────────────────────────────────────────────────────
 // ITEMS — id · category · kind · price · where the toy is in its photograph.

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { t } from '@/locale'
-import { CATEGORIES, ITEMS, itemsIn, type Item } from '@/shop/catalog'
+import { CATEGORIES, itemsIn, type Item } from '@/shop/catalog'
 import { ItemCard } from './ItemCard'
 import { Lightbox } from './Lightbox'
 import { ShopBar } from './ShopBar'
@@ -30,10 +30,13 @@ export function Shop() {
         onCoins={wallet.setCoins}
         onClear={wallet.clearPurchases}
         owned={wallet.boughtCount}
-        total={ITEMS.length}
       />
 
       <Tabs categories={CATEGORIES} activeId={categoryId} onPick={setCategoryId} />
+
+      {/* An engraved line between the shelf's name and the shelf, the way a
+          page of a book is ruled off from its heading. */}
+      <hr className="rule" />
 
       <main className="shelf">
         {/* What a category added before its photographs looks like. */}

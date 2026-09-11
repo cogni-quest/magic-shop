@@ -39,13 +39,13 @@ export const ru = {
     purseLabel: (coins: number) => `в кошельке ${ru.coins(coins)}`,
     purseEdit: 'Сколько у тебя монет?',
     price: (coins: number) => `цена ${ru.coins(coins)}`,
+    /** Engraved above the number, in small capitals. */
+    priceLabel: 'цена',
     buy: 'Купить',
     short: (missing: number) => `не хватает ${missing}`,
     shortLabel: (missing: number) => `не хватает ${ru.coins(missing)}`,
     bought: 'Куплено',
     undo: 'вернуть',
-    /** The collection, counted out loud — half the reason a child buys anything. */
-    collected: (owned: number, total: number) => `собрано ${owned} из ${total}`,
     empty: 'Здесь пока пусто',
     /** The full-screen photograph. */
     openPhoto: (name: string) => `${name} — посмотреть`,

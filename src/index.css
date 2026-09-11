@@ -1,33 +1,38 @@
-/* The palette is CogniQuest's, token for token: the two sites are one place to
-   the child — he earns there and spends here — and nothing gives that away
-   faster than two different whites. */
+/* A lacquer box: black ground, gold hairlines, parchment lettering.
+ *
+ * This is the one place the shop parts company with CogniQuest, which is a warm
+ * off-white workbook and right to be. The shop is the other half of the evening
+ * — the lid comes off the box and the treasure is inside — and a treasure box is
+ * dark or it is a shelf.
+ *
+ * Dark only, deliberately: `color-scheme: dark` and no light palette. A single
+ * committed look beats two half-tuned ones, and every colour below is chosen
+ * against the black.
+ */
 :root {
-  color-scheme: light dark;
-  font-family: 'Segoe UI', system-ui, sans-serif;
-  --bg: #fdfbf7;
-  --fg: #2b2b33;
-  --muted: #7a7a88;
+  color-scheme: dark;
 
-  /* The four things a card can say, each with one colour and no second job:
-     buy it, own it, cannot afford it, what it costs. CogniQuest keeps these as
-     bare hex repeated at each use; here they are named, because the card, the
-     tab and the bar all have to agree on them. */
-  --action: #4a7de0;
-  --owned: #2e9e5b;
-  --short: #d98324;
-  --gold: #a67c00;
-  --danger: #c0392b;
-}
+  /* The lacquer itself, and the soot in its corners. */
+  --lak: #0b0a0c;
+  --lak-2: #141117;
+  --kopot: #2a2620;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #1b1b21;
-    --fg: #ececf1;
-    --muted: #9a9aa8;
-    /* Gold at #a67c00 is a brown smudge on near-black. Lifted only here — the
-       other four read in both themes as they are. */
-    --gold: #d9aa2b;
-  }
+  /* Gold: leaf, lit edge, and the dim line that draws most of the frames. */
+  --zoloto: #d9a441;
+  --zoloto-lit: #f2d08a;
+  --zoloto-dim: #8a6a2c;
+
+  /* Cinnabar for what is out of reach, emerald for what is already his. */
+  --kinovar: #b7332a;
+  --izumrud: #4e8c5a;
+
+  /* Parchment — the lettering, and its quieter voice. */
+  --pergament: #e8dfcc;
+  --pergament-dim: #9c947f;
+
+  --serif: 'PT Serif', Georgia, 'Times New Roman', serif;
+  --display: 'Ruslan Display', 'PT Serif', Georgia, serif;
+  --mono: 'PT Mono', Consolas, 'Courier New', monospace;
 }
 
 * {
@@ -37,10 +42,14 @@
 body {
   margin: 0;
   min-height: 100vh;
-  background: var(--bg);
-  color: var(--fg);
-  /* A tablet paints a blue box over anything tapped. On cards this large it is
-     the first thing you see, and the cards already answer a press themselves. */
+  background: var(--lak);
+  color: var(--pergament);
+  font-family: var(--serif);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  /* A tablet paints a blue box over anything tapped; the cards answer a press
+     themselves. */
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -50,7 +59,24 @@ button {
   touch-action: manipulation;
 }
 
-/* A shop full of things that pop and lift, for a child who may not want them to. */
+/* Small capitals in a monospace, wide-tracked — the label engraved above a
+   thing rather than a sentence about it. */
+.eyebrow {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--zoloto-dim);
+}
+
+/* Every number on this page is compared against another — a price against a
+   purse. Proportional digits make two prices of one length look different. */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* A shop full of things that glow and lift, for a child who may not want them to. */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -58,11 +84,4 @@ button {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
   }
-}
-
-/* Every number on this page is one the child compares against another — a
-   price against a balance, a shortfall against a price. Proportional digits
-   make two prices of the same length look different widths. */
-.tabular {
-  font-variant-numeric: tabular-nums;
 }

@@ -2,56 +2,35 @@ import { useState } from 'react'
 import { t } from '@/locale'
 
 /**
- * The bar across the top: whose shop this is, what is in the purse, and the way
- * to clear the shelf.
+ * The sign over the door: whose shop this is, and what is in the purse.
  *
- * Laid out like CogniQuest's `TopBar` — destructive thing on the left, the
- * number that keeps changing at the far right — because the child moves between
- * the two apps and the corners should mean the same in both.
+ * The shelf itself already says how much of the collection is his — every case
+ * on it is either sealed or padlocked — so the sign says it no second time.
  */
 export function ShopBar({
   coins,
   onCoins,
   onClear,
   owned,
-  total,
 }: {
   coins: number
   onCoins: (coins: number) => void
   onClear: () => void
-  /** How many toys are already on the shelf. */
+  /** How many toys are already his. Nothing bought, nothing to clear. */
   owned: number
-  /** How many there are to collect. */
-  total: number
 }) {
   const [confirming, setConfirming] = useState(false)
-  // Nothing bought yet means nothing to clear, and a dead button to hide.
   const canClear = owned > 0
 
   return (
     <header className="shopbar">
-      <div className="shopbar__left">
-        <span className="shopbar__mark" aria-hidden="true">
-          🧙
-        </span>
-        <div>
-          <h1 className="shopbar__title">{t.app.title}</h1>
-          {/* The tally is the other half of why a child buys anything: not the
-              toy alone, but the row filling up. */}
-          <p className="shopbar__tally">
-            {t.shop.collected(owned, total)}
-            <span className="tally" aria-hidden="true">
-              {Array.from({ length: total }, (_, index) => (
-                <span key={index} className={`tally__pip${index < owned ? ' tally__pip--on' : ''}`} />
-              ))}
-            </span>
-          </p>
-        </div>
+      <div className="shopbar__crest">
+        <h1 className="shopbar__title">{t.app.title}</h1>
       </div>
 
       <div className="shopbar__right">
-        {/* Two steps, like «Новая игра» next door: a stray tap must not throw
-            away a week of buying. */}
+        {/* Two steps, like «Новая игра» in CogniQuest: a stray tap must not throw
+            away a month of collecting. */}
         {canClear &&
           (confirming ? (
             <>
@@ -82,7 +61,7 @@ export function ShopBar({
 }
 
 /**
- * The balance — a number until it is tapped, a field while it is being typed.
+ * The purse — a number until it is tapped, a field while it is being typed.
  *
  * The coins are earned in another app on another domain, so there is nothing to
  * read and this field is the only way they get in. Everything fiddly about it
@@ -105,8 +84,10 @@ function Purse({ coins, onCoins }: { coins: number; onCoins: (coins: number) => 
         onClick={() => setDraft(String(coins))}
         aria-label={`${t.shop.purseLabel(coins)}. ${t.shop.purseEdit}`}
       >
-        <span aria-hidden="true">🪙</span>
         <span className="purse__amount tabular">{coins}</span>
+        <span className="purse__coin" aria-hidden="true">
+          🪙
+        </span>
       </button>
     )
   }
@@ -118,7 +99,6 @@ function Purse({ coins, onCoins }: { coins: number; onCoins: (coins: number) => 
 
   return (
     <span className="purse purse--editing">
-      <span aria-hidden="true">🪙</span>
       <input
         className="purse__input tabular"
         type="text"
@@ -135,6 +115,9 @@ function Purse({ coins, onCoins }: { coins: number; onCoins: (coins: number) => 
           if (event.key === 'Escape') setDraft(null)
         }}
       />
+      <span className="purse__coin" aria-hidden="true">
+        🪙
+      </span>
     </span>
   )
 }

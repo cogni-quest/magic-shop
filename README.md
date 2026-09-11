@@ -67,6 +67,29 @@ be a test that runs in a second. CogniQuest enforces the same boundary with a
 the line, that machinery would cost more than it caught. Worth adding the day
 there is a second.
 
+## The look
+
+A lacquer box with the lid off: black ground, gold hairlines, a second line
+inside the first, a vignette in every corner, square corners throughout. Ruslan
+Display for the sign, PT Serif for what the child reads, PT Mono for the small
+capitals — all three from Google Fonts, all three with a local fallback.
+
+**Dark only**, deliberately: `color-scheme: dark` and no light palette. One
+committed look beats two half-tuned ones, and every colour is chosen against the
+black. This is where the shop parts company with CogniQuest, which is a warm
+off-white workbook and right to be — the shop is the other half of the evening.
+
+Three metals do all the signalling, and nothing else may use them:
+
+| | |
+|---|---|
+| gold | what a thing costs, and what he can take today |
+| cinnabar | what he cannot reach yet |
+| emerald | what is already his |
+
+A category's colour (`CATEGORIES_TABLE`) is a fourth voice and has to stay clear
+of those three.
+
 ## Adding a toy
 
 A photograph, a command and one row:
