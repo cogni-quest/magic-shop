@@ -26,12 +26,17 @@ export const ru = {
   /**
    * Toy names, keyed by KIND rather than by item id.
    *
-   * Four photographs of the same orc soldier are four rows in the catalogue and
-   * one line here — the name belongs to the toy, not to the picture of it, and
-   * that is what makes a fifth orc a single row and no edit in this file.
+   * The name belongs to the toy, not to the picture of it: a second photograph
+   * of a toy already listed here is a row in the catalogue and no edit in this
+   * file. The four mountain orcs are four moulds, so they are four lines — each
+   * named for what it is holding, which is how the child tells them apart on
+   * the shelf.
    */
   items: {
-    'orc-soldier': 'Орк солдат',
+    'mountain-orc-broadsword': 'Горный орк с палашом',
+    'mountain-orc-axe': 'Горный орк с топором',
+    'mountain-orc-cleaver': 'Горный орк с тесаком',
+    'mountain-orc-club': 'Горный орк с дубиной',
   } as Record<string, string>,
 
   shop: {

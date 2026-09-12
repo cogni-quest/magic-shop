@@ -79,9 +79,10 @@ const CATEGORIES_TABLE: readonly CategoryRow[] = [['army', '⚔', '#d9a441']]
 // `id` IS A SAVE KEY: a bought toy is remembered by it, so renaming one un-buys
 // that toy on the child's tablet. Written once, never touched.
 //
-// `kind` is what the toy is. Four photographs of the same orc soldier share one
-// kind and therefore one name, which is the whole reason the name is not a
-// column here.
+// `kind` is what the toy is, and the name is looked up from it rather than
+// written here. Two toys off the same mould share a kind and therefore one line
+// of Russian; the four mountain orcs below are four moulds, told apart by what
+// each one is holding, so they carry four.
 //
 // The picture is not a column either: it is always
 // `/<category>/<id>.webp`. One row, one file named after it — nothing to keep
@@ -98,14 +99,14 @@ type ItemRow = readonly [
 ]
 
 const ITEMS_TABLE: readonly ItemRow[] = [
-  // Sitting on a pine branch, small in a busy frame — the deepest zoom of the four.
-  ['orc-1', 'army', 'orc-soldier', 50, '34% 52%', 2.1],
-  // Swinging an axe, hanging off a branch against the sky.
-  ['orc-2', 'army', 'orc-soldier', 50, '45% 47%', 1.7],
-  // Sword and shield on paving stones; the stones make a clean backdrop.
-  ['orc-3', 'army', 'orc-soldier', 50, '45% 42%', 1.7],
-  // The only one shot landscape, so the crop throws away width, not height.
-  ['orc-4', 'army', 'orc-soldier', 50, '38% 52%', 1.5],
+  // Sitting on a pine branch, broad blade across his knees — the deepest zoom of the four.
+  ['orc-1', 'army', 'mountain-orc-broadsword', 50, '34% 52%', 2.1],
+  // Swinging an axe overhead, hanging off a branch against the sky.
+  ['orc-2', 'army', 'mountain-orc-axe', 50, '45% 47%', 1.7],
+  // Cleaver and shield on paving stones; the stones make a clean backdrop.
+  ['orc-3', 'army', 'mountain-orc-cleaver', 50, '45% 42%', 1.7],
+  // Spiked club raised; the only one shot landscape, so the crop throws away width, not height.
+  ['orc-4', 'army', 'mountain-orc-club', 50, '38% 52%', 1.5],
 ]
 
 /** Hand notes, where two toys of one kind need telling apart. Empty today. */

@@ -123,11 +123,13 @@ A photograph, a command and one row:
 2. `npm run photos`
 3. in `src/shop/catalog.ts`, one line in `ITEMS_TABLE`
 
-The name on the card comes from the toy's **kind**, so four photographs of one
-orc soldier share a single line in `src/locale/ru.ts` — which is why a fifth orc
-needs no edit there at all. A new **category** is a line in `CATEGORIES_TABLE`, a
-label in `t.categories`, and a folder; the tab bar is drawn from the table, so
-the tab appears by itself.
+The name on the card comes from the toy's **kind**, so a second photograph of a
+toy already on the shelf reuses its line in `src/locale/ru.ts` and needs no edit
+there at all; a toy of a new kind adds one line to `t.items`. The four mountain
+orcs are four kinds, one per weapon — palash, axe, cleaver, club — because on
+the shelf that is what tells them apart. A new **category** is a line in
+`CATEGORIES_TABLE`, a label in `t.categories`, and a folder; the tab bar is drawn
+from the table, so the tab appears by itself.
 
 ## Language
 
