@@ -2,14 +2,15 @@
 
 The shelf the coins earned in [CogniQuest](https://github.com/dr-o-ne/cogniquest)
 are saved up for. A child of six does addition there, banks gold for every
-opponent he beats, and comes here to see what it would buy — orc soldiers,
+opponent he beats, and comes here to see what it would buy — toy soldiers,
 photographed in the garden, standing in their cases with a price under each.
 
 The interface is in Russian; the code, the comments and the docs are in English.
 
 ## State
 
-One shelf, «Армия», with four orcs at fifty coins each.
+Two shelves: «Орки», four mountain orcs at fifty coins, and «Викинги», five of
+them at forty.
 
 **The page never writes anything.** What the child has — how many coins, which
 toys are already his — lives in [`src/shop/state.json`](src/shop/state.json) and
@@ -113,13 +114,15 @@ Three metals do all the signalling, and nothing else may use them:
 | emerald | what is already his |
 
 A category's colour (`CATEGORIES_TABLE`) is a fourth voice and has to stay clear
-of those three.
+of those three. The orcs keep gold; the vikings took the cold blue, which is
+what is left once red, green and yellow are spoken for.
 
 ## Adding a toy
 
 A photograph, a command and one row:
 
-1. `photos/army/orc-5.jpg` — named after the id it will have
+1. `photos/vikings/viking-6.jpg` — in the category's folder, named after the id
+   it will have
 2. `npm run photos`
 3. in `src/shop/catalog.ts`, one line in `ITEMS_TABLE`
 
@@ -127,7 +130,9 @@ The name on the card comes from the toy's **kind**, so a second photograph of a
 toy already on the shelf reuses its line in `src/locale/ru.ts` and needs no edit
 there at all; a toy of a new kind adds one line to `t.items`. The four mountain
 orcs are four kinds, one per weapon — palash, axe, cleaver, club — because on
-the shelf that is what tells them apart. A new **category** is a line in
+the shelf that is what tells them apart. The five vikings are five more: three
+named for what they carry, and two — a jarl, a berserk — for what they are,
+which is the word the child uses for them anyway. A new **category** is a line in
 `CATEGORIES_TABLE`, a label in `t.categories`, and a folder; the tab bar is drawn
 from the table, so the tab appears by itself.
 

@@ -20,7 +20,8 @@ export const ru = {
 
   /** Tab labels, keyed by category id. */
   categories: {
-    army: 'Армия',
+    orcs: 'Орки',
+    vikings: 'Викинги',
   } as Record<string, string>,
 
   /**
@@ -28,15 +29,20 @@ export const ru = {
    *
    * The name belongs to the toy, not to the picture of it: a second photograph
    * of a toy already listed here is a row in the catalogue and no edit in this
-   * file. The four mountain orcs are four moulds, so they are four lines — each
-   * named for what it is holding, which is how the child tells them apart on
-   * the shelf.
+   * file. Every figure on the shelf is its own mould, so each has a line — named
+   * for what it holds, which is how the child tells one orc from another, or for
+   * what it is, where that is the plainer word: a jarl is a jarl.
    */
   items: {
     'mountain-orc-broadsword': 'Горный орк с палашом',
     'mountain-orc-axe': 'Горный орк с топором',
     'mountain-orc-cleaver': 'Горный орк с тесаком',
     'mountain-orc-club': 'Горный орк с дубиной',
+    'viking-axe-shield': 'Викинг с топором и щитом',
+    'viking-jarl': 'Ярл',
+    'viking-archer': 'Викинг лучник',
+    'viking-greatsword': 'Викинг с двуручным мечом',
+    'viking-berserk': 'Берсерк',
   } as Record<string, string>,
 
   shop: {

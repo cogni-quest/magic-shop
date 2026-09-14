@@ -34,7 +34,13 @@ export interface Item {
   readonly price: number
   /** Already resolved through `publicUrl()`; safe to put straight in `src`. */
   readonly image: string
-  /** Inherited from the category, so a card and its tab agree on colour. */
+  /**
+   * The category's colour, inherited.
+   *
+   * Not the frame of the case: that is the toy's state, in one of the three
+   * metals, and a fourth colour there would say a thing the shop does not mean.
+   * This is what stands in for a photograph that will not load.
+   */
   readonly color: string
   /**
    * Where the toy sits in its photograph, as a CSS `object-position`.
@@ -67,11 +73,25 @@ export interface Item {
 // thing costs, emerald is what is already his, cinnabar is what he cannot reach
 // yet. A category's colour is the fourth voice and has to stay out of those
 // three — which the next one along will have to respect too.
+//
+// The orcs keep the gold they were shelved in. The vikings take the one clear
+// quarter of the wheel left: red is cinnabar, green is emerald, yellow is gold,
+// so blue is what remains — and a cold northern steel is no hardship for them.
+//
+// `id` IS ALSO THE FOLDER the photographs live in, `public/<id>/`, so renaming a
+// category means moving files. Splitting one in two, as «Армия» was split into
+// these, means moving them into two.
 // ─────────────────────────────────────────────────────────────────────────
 
 type CategoryRow = readonly [id: string, icon: string, color: string]
 
-const CATEGORIES_TABLE: readonly CategoryRow[] = [['army', '⚔', '#d9a441']]
+const CATEGORIES_TABLE: readonly CategoryRow[] = [
+  // Both glyphs default to TEXT presentation, so they take the tab's colour like
+  // a letter does. An emoji-by-default character (🪓, ⚓) arrives in its own
+  // colours instead and lands a cartoon sticker on the lacquer.
+  ['orcs', '⚔', '#d9a441'],
+  ['vikings', '🛡', '#6f9fd0'],
+]
 
 // ─────────────────────────────────────────────────────────────────────────
 // ITEMS — id · category · kind · price · where the toy is in its photograph.
@@ -81,8 +101,10 @@ const CATEGORIES_TABLE: readonly CategoryRow[] = [['army', '⚔', '#d9a441']]
 //
 // `kind` is what the toy is, and the name is looked up from it rather than
 // written here. Two toys off the same mould share a kind and therefore one line
-// of Russian; the four mountain orcs below are four moulds, told apart by what
-// each one is holding, so they carry four.
+// of Russian; every figure below is its own mould, so each carries its own. The
+// orcs are told apart by what they hold, and so are most of the vikings — but a
+// jarl and a berserk are told apart by what they are, which is what the child
+// calls them.
 //
 // The picture is not a column either: it is always
 // `/<category>/<id>.webp`. One row, one file named after it — nothing to keep
@@ -100,13 +122,23 @@ type ItemRow = readonly [
 
 const ITEMS_TABLE: readonly ItemRow[] = [
   // Sitting on a pine branch, broad blade across his knees — the deepest zoom of the four.
-  ['orc-1', 'army', 'mountain-orc-broadsword', 50, '34% 52%', 2.1],
+  ['orc-1', 'orcs', 'mountain-orc-broadsword', 50, '34% 52%', 2.1],
   // Swinging an axe overhead, hanging off a branch against the sky.
-  ['orc-2', 'army', 'mountain-orc-axe', 50, '45% 47%', 1.7],
+  ['orc-2', 'orcs', 'mountain-orc-axe', 50, '45% 47%', 1.7],
   // Cleaver and shield on paving stones; the stones make a clean backdrop.
-  ['orc-3', 'army', 'mountain-orc-cleaver', 50, '45% 42%', 1.7],
+  ['orc-3', 'orcs', 'mountain-orc-cleaver', 50, '45% 42%', 1.7],
   // Spiked club raised; the only one shot landscape, so the crop throws away width, not height.
-  ['orc-4', 'army', 'mountain-orc-club', 50, '38% 52%', 1.5],
+  ['orc-4', 'orcs', 'mountain-orc-club', 50, '38% 52%', 1.5],
+  // Crouched on bare soil, shield to one side and the axe low — as deep a zoom as orc-1.
+  ['viking-1', 'vikings', 'viking-axe-shield', 40, '38% 26%', 2.1],
+  // Arms folded over a sword hanging point-down; cloak, horns, and the stillest pose on the shelf.
+  ['viking-2', 'vikings', 'viking-jarl', 40, '47% 28%', 1.7],
+  // Braced along a tree trunk with the bow held out to one side; the crop has to keep the whole bow.
+  ['viking-3', 'vikings', 'viking-archer', 40, '71% 50%', 1.7],
+  // Blade raised past his own height, so the crop is aimed near the top of the frame rather than the middle.
+  ['viking-4', 'vikings', 'viking-greatsword', 40, '46% 5%', 1.5],
+  // Mid-stride, axe swung wide — the broadest figure here, so width sets the zoom and height comes free.
+  ['viking-5', 'vikings', 'viking-berserk', 40, '62% 17%', 1.5],
 ]
 
 /** Hand notes, where two toys of one kind need telling apart. Empty today. */
