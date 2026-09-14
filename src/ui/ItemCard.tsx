@@ -1,4 +1,3 @@
-import type { CSSProperties } from 'react'
 import type { ItemState } from '@/core/shelf'
 import { t } from '@/locale'
 import type { Item } from '@/shop/catalog'
@@ -15,6 +14,11 @@ import { Photo } from './Photo'
  *
  * Nothing here is a button except the photograph. Buying happens at the kitchen
  * table; this says what it would cost and whether he is there yet.
+ *
+ * The case carries no category colour, deliberately. `--f` is its metal and the
+ * stylesheet sets it from the state; an inline one would outrank `.item--short`
+ * and `.item--bought` and glow a toy the child already owns in his category's
+ * colour rather than in emerald. The categories speak on the tabs instead.
  */
 export function ItemCard({
   item,
@@ -29,7 +33,7 @@ export function ItemCard({
   onOpenPhoto: () => void
 }) {
   return (
-    <article className={`item item--${state}`} style={{ '--f': item.color } as CSSProperties}>
+    <article className={`item item--${state}`}>
       <Corners />
 
       <button className="item__photo-btn" onClick={onOpenPhoto} aria-label={t.shop.openPhoto(item.name)}>

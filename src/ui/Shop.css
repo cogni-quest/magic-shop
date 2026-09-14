@@ -208,10 +208,13 @@
   color: var(--pergament);
 }
 
+/* `--card` is the category's colour, put here by Tabs.tsx. A tab has no metal of
+   its own — it is not a thing that can be afforded — so this is the one place
+   the fourth voice is heard. */
 .tab--active {
-  border-color: var(--f, var(--zoloto));
-  color: var(--f, var(--zoloto));
-  box-shadow: inset 0 -2px 0 -1px var(--f, var(--zoloto));
+  border-color: var(--card, var(--zoloto));
+  color: var(--card, var(--zoloto));
+  box-shadow: inset 0 -2px 0 -1px var(--card, var(--zoloto));
 }
 
 .tab__icon {
