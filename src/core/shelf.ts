@@ -5,13 +5,12 @@
  * `src/shop/state.json` and a toy, and answers the one question every case on
  * the shelf asks — is this his already, can he take it today, or not yet.
  *
- * There is deliberately nothing here that spends. The state lives in the
- * repository and is edited by hand between sessions; the page only reads it. A
- * buy button would have to write somewhere, and the only somewhere available to
- * a static site is the browser it happens to be open in — which would make the
- * tablet disagree with the repository the first time the child tapped it. The
- * shop that could spend is in the history, at `Add the shop`, if it is ever
- * wanted back.
+ * There is nothing here that spends, and there does not need to be: this module
+ * only classifies. Spending is `core/wallet.ts`, which keeps a ledger over the
+ * committed state and hands one back here to be read. The split is worth the
+ * second file — these three answers are what every card on the shelf asks, with
+ * or without a buy button, and they were the whole of this module during the
+ * stretch when the shop could not spend at all.
  */
 
 export interface ShelfState {

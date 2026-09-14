@@ -52,10 +52,16 @@ export const ru = {
     /** Engraved above the number, in small capitals. */
     priceLabel: 'цена',
     /**
-     * What a case says when the coins are there for it. Not «купить» — nothing
-     * on this page buys anything; the trade happens at the kitchen table.
+     * What a case says when the coins are there for it — and it does buy: one
+     * tap arms the case, «да» spends. It said «можно брать» while the page could
+     * not spend at all, which was honest then and would be a dodge now.
      */
-    ready: 'можно брать',
+    buy: 'Купить',
+    /** The armed case, in the width of a mark. Read out in full by `confirm`. */
+    confirmShort: 'точно?',
+    confirm: (name: string, price: number) => `купить «${name}» за ${ru.coins(price)}?`,
+    yes: 'да',
+    no: 'нет',
     short: (missing: number) => `не хватает ${missing}`,
     shortLabel: (missing: number) => `не хватает ${ru.coins(missing)}`,
     bought: 'Куплено',

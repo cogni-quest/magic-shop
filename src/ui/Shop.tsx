@@ -1,30 +1,31 @@
 import { useState } from 'react'
-import { stateOf, shortfall } from '@/core/shelf'
 import { t } from '@/locale'
 import { CATEGORIES, itemsIn, type Item } from '@/shop/catalog'
-import { STATE } from '@/shop/state'
 import { ItemCard } from './ItemCard'
 import { Lightbox } from './Lightbox'
 import { ShopBar } from './ShopBar'
 import { Tabs } from './Tabs'
+import { useWallet } from './useWallet'
 import './Shop.css'
 
 /**
  * The shop, which is the whole app.
  *
- * What the child has comes out of the repository (`src/shop/state.json`) and
- * nothing here changes it, so the only state on this side is about the screen:
- * which shelf is open, and which photograph is being looked at.
+ * What the child has starts in the repository (`src/shop/state.json`) and is
+ * then kept by `useWallet`, which spends against it and saves to this browser.
+ * The rest of the state here is about the screen: which shelf is open, and
+ * which photograph is being looked at.
  */
 export function Shop() {
   const [categoryId, setCategoryId] = useState(CATEGORIES[0]?.id ?? '')
   const [viewing, setViewing] = useState<Item | null>(null)
 
+  const shop = useWallet()
   const items = itemsIn(categoryId)
 
   return (
     <div className="shop">
-      <ShopBar coins={STATE.coins} />
+      <ShopBar coins={shop.coins} />
 
       <Tabs categories={CATEGORIES} activeId={categoryId} onPick={setCategoryId} />
 
@@ -42,9 +43,10 @@ export function Shop() {
               <li key={item.id}>
                 <ItemCard
                   item={item}
-                  state={stateOf(STATE, item)}
-                  shortfall={shortfall(STATE, item)}
+                  state={shop.stateOf(item)}
+                  shortfall={shop.shortfall(item)}
                   onOpenPhoto={() => setViewing(item)}
+                  onBuy={() => shop.buy(item)}
                 />
               </li>
             ))}

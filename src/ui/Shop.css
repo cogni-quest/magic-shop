@@ -385,15 +385,83 @@
 .mark {
   padding: 0.45rem 1.1rem;
   border: 1px solid currentcolor;
+  background: none;
+  color: inherit;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
+/* Only one of the marks is pressable. The other says «не хватает» and is a
+   label in the same frame — which is the whole reason this rule is written
+   against the element and not against the class. */
+button.mark {
+  cursor: pointer;
+  transition: color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
 .mark--ready {
   color: var(--zoloto-lit);
   background: linear-gradient(180deg, rgba(217, 164, 65, 0.18), rgba(217, 164, 65, 0.05));
+}
+
+@media (hover: hover) {
+  button.mark--ready:hover {
+    box-shadow: 0 0 18px -6px var(--zoloto);
+  }
+}
+
+button.mark--ready:active {
+  box-shadow: none;
+  transform: translateY(1px);
+}
+
+/* ── «Точно?» ────────────────────────────────────────────────────────────
+   The armed case. It stands in the mark's place and inside the mark's row, so
+   arming one card moves nothing anywhere on the shelf. */
+
+.ask {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--mono);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+
+.ask__q {
+  color: var(--pergament-dim);
+  letter-spacing: 0.1em;
+}
+
+.ask__btn {
+  padding: 0.35rem 0.6rem;
+  border: 1px solid currentcolor;
+  background: none;
+  color: var(--pergament-dim);
+  font: inherit;
+  letter-spacing: 0.1em;
+  text-transform: inherit;
+  cursor: pointer;
+  transition: color 0.18s ease;
+}
+
+/* «Да» is the one that spends a week of coins, so it is the one lit in gold —
+   and «нет» stays parchment. A child scanning for the bright button should find
+   the one he means, but he should have to read this pair, not aim at it. */
+.ask__btn--yes {
+  color: var(--zoloto-lit);
+}
+
+@media (hover: hover) {
+  .ask__btn:hover {
+    color: var(--pergament);
+  }
+
+  .ask__btn--yes:hover {
+    color: var(--zoloto);
+  }
 }
 
 .mark--short {

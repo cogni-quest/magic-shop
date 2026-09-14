@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { ItemState } from '@/core/shelf'
 import { t } from '@/locale'
 import type { Item } from '@/shop/catalog'
@@ -12,8 +13,11 @@ import { Photo } from './Photo'
  * by the colour of the metal: gold for what he can take today, cinnabar for what
  * he cannot yet, emerald for what is already his.
  *
- * Nothing here is a button except the photograph. Buying happens at the kitchen
- * table; this says what it would cost and whether he is there yet.
+ * Buying asks first. One tap arms the case and a second spends; «нет» puts it
+ * back. The button is large, the aim of a six-year-old is not, and forty coins
+ * take a week to earn — so the cheap thing to spend on a stray tap is one more
+ * tap. The two words replace the mark in place, inside the same fixed-height
+ * row, so nothing on the shelf moves while he decides.
  *
  * The case carries no category colour, deliberately. `--f` is its metal and the
  * stylesheet sets it from the state; an inline one would outrank `.item--short`
@@ -25,13 +29,17 @@ export function ItemCard({
   state,
   shortfall,
   onOpenPhoto,
+  onBuy,
 }: {
   item: Item
   state: ItemState
   /** How many coins short, when that is what the state means. */
   shortfall: number
   onOpenPhoto: () => void
+  onBuy: () => void
 }) {
+  const [asking, setAsking] = useState(false)
+
   return (
     <article className={`item item--${state}`}>
       <Corners />
@@ -67,7 +75,26 @@ export function ItemCard({
       {/* Kept at a fixed height across all three states, so a shelf of cases
           lines up whatever is on it. */}
       <div className="item__mark">
-        {state === 'affordable' && <span className="mark mark--ready">{t.shop.ready}</span>}
+        {state === 'affordable' && !asking && (
+          <button className="mark mark--ready" onClick={() => setAsking(true)}>
+            {t.shop.buy}
+          </button>
+        )}
+
+        {state === 'affordable' && asking && (
+          <span className="ask" role="group" aria-label={t.shop.confirm(item.name, item.price)}>
+            <span className="ask__q" aria-hidden="true">
+              {t.shop.confirmShort}
+            </span>
+            <button className="ask__btn ask__btn--yes" onClick={onBuy}>
+              {t.shop.yes}
+            </button>
+            <button className="ask__btn" onClick={() => setAsking(false)}>
+              {t.shop.no}
+            </button>
+          </span>
+        )}
+
         {state === 'short' && (
           <span className="mark mark--short tabular" aria-label={t.shop.shortLabel(shortfall)}>
             {t.shop.short(shortfall)}
