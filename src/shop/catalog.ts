@@ -67,7 +67,9 @@ export interface Item {
 }
 
 // ─────────────────────────────────────────────────────────────────────────
-// CATEGORIES — id · emoji · colour. The tab bar is this table, in this order.
+// CATEGORIES — id · emoji · colour. The tab bar is this table, in this order,
+// which is cheapest shelf first: elves at thirty, vikings at forty, orcs at
+// fifty.
 //
 // Gold, because on this shelf the metal already means something: gold is what a
 // thing costs, emerald is what is already his, cinnabar is what he cannot reach
@@ -86,14 +88,14 @@ export interface Item {
 type CategoryRow = readonly [id: string, icon: string, color: string]
 
 const CATEGORIES_TABLE: readonly CategoryRow[] = [
-  // Both glyphs default to TEXT presentation, so they take the tab's colour like
-  // a letter does. An emoji-by-default character (🪓, ⚓) arrives in its own
-  // colours instead and lands a cartoon sticker on the lacquer.
-  ['orcs', '⚔', '#d9a441'],
-  ['vikings', '🛡', '#6f9fd0'],
   // Amethyst: the fourth voice, clear of gold, cinnabar and emerald, and far
   // enough from the vikings' steel blue to read as its own colour on the tab bar.
   ['elves', '⚜', '#9b7fd4'],
+  // Both glyphs default to TEXT presentation, so they take the tab's colour like
+  // a letter does. An emoji-by-default character (🪓, ⚓) arrives in its own
+  // colours instead and lands a cartoon sticker on the lacquer.
+  ['vikings', '🛡', '#6f9fd0'],
+  ['orcs', '⚔', '#d9a441'],
 ]
 
 // ─────────────────────────────────────────────────────────────────────────
