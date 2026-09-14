@@ -537,6 +537,12 @@ button.mark--ready:active {
   color: var(--izumrud);
 }
 
+/* Settled, not drained: still his in colour, just no longer asking to be
+   looked at the way an affordable toy does. */
+.item--bought .photo {
+  filter: saturate(0.3) brightness(0.68);
+}
+
 /* Pressed across the corner of the case, like a seal in wax. */
 .item__seal {
   position: absolute;
