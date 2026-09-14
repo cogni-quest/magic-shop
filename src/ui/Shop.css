@@ -234,11 +234,16 @@
 }
 
 .grid {
-  display: grid;
-  /* Three columns, fixed — the shelf reads as rows of big cases rather than a
-     wall of small ones. */
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(0.9rem, 2.5vw, 1.4rem);
+  --gap: clamp(0.9rem, 2.5vw, 1.4rem);
+
+  /* Flexbox, not grid: a grid keeps a half-empty last row pinned to the left,
+     and a shelf with five toys in three columns has one every time. Flex-wrap
+     with `justify-content: center` centres whatever is left on that line, and
+     `flex-grow: 0` stops those leftover cases stretching to fill it. */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--gap);
   max-width: 58rem;
   margin: 0 auto;
   padding: clamp(1.1rem, 3vw, 1.8rem) clamp(0.9rem, 3vw, 1.6rem) 3.5rem;
@@ -247,14 +252,17 @@
 
 .grid li {
   display: flex;
+  /* Three columns, fixed — the shelf reads as rows of big cases rather than a
+     wall of small ones. */
+  flex: 0 1 calc((100% - 2 * var(--gap)) / 3);
 }
 
 /* Three columns need real room per card; below 34rem — the same phone cutoff
    as the bar above — they pack too tight and the text starts wrapping to
    three lines, so the shelf drops to two. */
 @media (max-width: 34rem) {
-  .grid {
-    grid-template-columns: repeat(2, 1fr);
+  .grid li {
+    flex-basis: calc((100% - var(--gap)) / 2);
   }
 }
 
