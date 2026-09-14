@@ -235,11 +235,11 @@
 
 .grid {
   display: grid;
-  /* Two columns, fixed — the shelf reads as a pair of big cases rather than a
+  /* Three columns, fixed — the shelf reads as rows of big cases rather than a
      wall of small ones. */
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: clamp(0.9rem, 2.5vw, 1.4rem);
-  max-width: 40rem;
+  max-width: 58rem;
   margin: 0 auto;
   padding: clamp(1.1rem, 3vw, 1.8rem) clamp(0.9rem, 3vw, 1.6rem) 3.5rem;
   list-style: none;
@@ -247,6 +247,15 @@
 
 .grid li {
   display: flex;
+}
+
+/* Three columns need real room per card; below 34rem — the same phone cutoff
+   as the bar above — they pack too tight and the text starts wrapping to
+   three lines, so the shelf drops to two. */
+@media (max-width: 34rem) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 /* ── A case on the shelf ─────────────────────────────────────────────── */
@@ -260,9 +269,9 @@
   align-items: center;
   gap: 0.4rem;
   width: 100%;
-  /* Two columns' worth of room, so a case grows to fill it rather than sitting
+  /* Three columns' worth of room, so a case grows to fill it rather than sitting
      stranded in a wide track. */
-  max-width: 20rem;
+  max-width: 17rem;
   margin: 0 auto;
   padding: 0.9rem 0.8rem 1rem;
   border: 1px solid rgba(217, 164, 65, 0.3);
