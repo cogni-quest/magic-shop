@@ -91,6 +91,9 @@ const CATEGORIES_TABLE: readonly CategoryRow[] = [
   // colours instead and lands a cartoon sticker on the lacquer.
   ['orcs', '⚔', '#d9a441'],
   ['vikings', '🛡', '#6f9fd0'],
+  // Amethyst: the fourth voice, clear of gold, cinnabar and emerald, and far
+  // enough from the vikings' steel blue to read as its own colour on the tab bar.
+  ['elves', '⚜', '#9b7fd4'],
 ]
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -137,6 +140,16 @@ const ITEMS_TABLE: readonly ItemRow[] = [
   ['viking-3', 'vikings', 'viking-archer', 40, '71% 50%', 1.7],
   // Blade raised past his own height, so the crop is aimed near the top of the frame rather than the middle.
   ['viking-4', 'vikings', 'viking-greatsword', 40, '46% 5%', 1.5],
+  // Crouched on rocks, bow drawn, quiver on his back — watching before he shoots.
+  ['elf-1', 'elves', 'elf-archer-watch', 30, '54% 40%', 1.7],
+  // Mid-leap, cloak flaring wide, loosing an arrow on the turn.
+  ['elf-2', 'elves', 'elf-archer-leap', 30, '54% 45%', 1.6],
+  // Standing easy among the leaves, bow lowered and not yet drawn.
+  ['elf-3', 'elves', 'elf-archer-ready', 30, '60% 59%', 2.0],
+  // Sword raised past his shoulder, half lost in a bed of marigolds.
+  ['elf-4', 'elves', 'elf-swordsman', 30, '39% 43%', 2.0],
+  // Low to the ground, bow drawn, breaking cover.
+  ['elf-5', 'elves', 'elf-archer-ambush', 30, '51% 62%', 1.7],
   // Mid-stride, axe swung wide — the broadest figure here, so width sets the zoom and height comes free.
   ['viking-5', 'vikings', 'viking-berserk', 40, '62% 17%', 1.5],
 ]

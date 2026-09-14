@@ -22,6 +22,7 @@ export const ru = {
   categories: {
     orcs: 'Орки',
     vikings: 'Викинги',
+    elves: 'Эльфы',
   } as Record<string, string>,
 
   /**
@@ -43,6 +44,11 @@ export const ru = {
     'viking-archer': 'Викинг лучник',
     'viking-greatsword': 'Викинг с двуручным мечом',
     'viking-berserk': 'Берсерк',
+    'elf-archer-watch': 'Эльф лучник в дозоре',
+    'elf-archer-leap': 'Эльф лучник в прыжке',
+    'elf-archer-ready': 'Эльф лучник наготове',
+    'elf-swordsman': 'Эльф с мечом',
+    'elf-archer-ambush': 'Эльф лучник из засады',
   } as Record<string, string>,
 
   shop: {
