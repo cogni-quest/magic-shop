@@ -1,4 +1,4 @@
 {
   "coins": 123,
-  "bought": []
+  "bought": ["orc-1", "orc-2"]
 }
