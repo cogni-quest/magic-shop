@@ -28,15 +28,20 @@ export function ItemCard({
   item,
   state,
   shortfall,
+  undoable,
   onOpenPhoto,
   onBuy,
+  onUndo,
 }: {
   item: Item
   state: ItemState
   /** How many coins short, when that is what the state means. */
   shortfall: number
+  /** Whether this one was bought in this sitting and can still be put back. */
+  undoable: boolean
   onOpenPhoto: () => void
   onBuy: () => void
+  onUndo: () => void
 }) {
   const [asking, setAsking] = useState(false)
 
@@ -99,6 +104,16 @@ export function ItemCard({
           <span className="mark mark--short tabular" aria-label={t.shop.shortLabel(shortfall)}>
             {t.shop.short(shortfall)}
           </span>
+        )}
+
+        {/* Only while the shop has been open since he bought it. A toy from an
+            earlier sitting shows the seal and nothing else — it is on his shelf
+            at home by now. No confirmation on this one: a stray tap costs him
+            nothing he cannot get back by buying it again. */}
+        {state === 'bought' && undoable && (
+          <button className="mark mark--undo" onClick={onUndo} aria-label={t.shop.undoLabel(item.name)}>
+            {t.shop.undo}
+          </button>
         )}
       </div>
     </article>

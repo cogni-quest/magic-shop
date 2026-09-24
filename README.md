@@ -1,9 +1,9 @@
 # Лавка чудес
 
-The shelf the coins earned in [CogniQuest](https://github.com/dr-o-ne/cogniquest)
-are saved up for. A child of six does addition there, banks gold for every
-opponent he beats, and comes here to see what it would buy — toy soldiers,
-photographed in the garden, standing in their cases with a price under each.
+The shelf the coins earned in [Quest](https://cogni-quest.github.io/quest/) are
+saved up for. A child of six does addition there, banks gold for every opponent
+he beats, and comes here to see what it would buy — toy soldiers, photographed
+in the garden, standing in their cases with a price under each.
 
 The interface is in Russian; the code, the comments and the docs are in English.
 
@@ -12,20 +12,72 @@ The interface is in Russian; the code, the comments and the docs are in English.
 Two shelves: «Орки», four mountain orcs at fifty coins, and «Викинги», five of
 them at forty.
 
-What the child starts with — how many coins, which toys are already his — lives
-in [`src/shop/state.json`](src/shop/state.json) and is edited by hand:
+### Coins: Quest's gold, less what was spent here
+
+The shop keeps no balance of its own. It works one out every time it is looked
+at:
+
+```
+coins = gold banked in Quest − spent
+```
+
+Quest writes the gold (`quest:profile` → `gold`, only ever added to); the shop
+writes `spent` (`magicshop:ledger` → `spent`). Each reads the other's number and
+never writes it, so two tabs open at once cannot lose a coin or mint one. Quest
+shows the same `gold − spent` in its corner, so both screens agree.
+
+### Where the count starts
+
+The two were joined up with the child already mid-way, and that day is written
+in [`src/shop/state.json`](src/shop/state.json), by hand:
 
 ```json
 {
-  "coins": 120,
-  "bought": ["orc-2"]
+  "coins": 17,
+  "bought": ["orc-1", "orc-2", "viking-2"]
 }
 ```
 
-Change it, commit, and the shelf says so once the deploy finishes. Every case is
-then one of three things, and the metal says which: **gold**, he has the coins
-for it; **cinnabar** with a padlock, and how many coins short he is; **emerald**
-with a seal, already his.
+`coins` is what he had in hand that day; `bought`, the toys already on his
+shelf — paid for in those coins, so they cost nothing on top, and can never be
+sold back.
+
+Quest's gold is a lifetime total, most of it long spent, so the tablet catches
+what Quest held **the first time the shop opens** and counts only gold earned
+after it:
+
+```
+spent = Quest's gold on that first open − coins + every purchase made here
+```
+
+On the day both screens read 17; every opponent beaten after that adds to it.
+
+**So after deploying, open the shop once before playing Quest.** Until the shop
+has opened, Quest shows its whole lifetime gold; and gold earned before that
+first open is absorbed into the starting point rather than added on top.
+
+Correcting `coins` or `bought` later is a commit, and keeps everything the
+tablet bought. The starting gold itself is never moved; to start the count again,
+clear `magicshop:ledger` in that browser.
+
+### What that means in practice
+
+Both sites are served from one origin, `cogni-quest.github.io`, and so share one
+`localStorage`. Which means:
+
+- it is **per browser** — his tablet and the family laptop count separately,
+  and clearing site data forgets both the gold and the purchases;
+- under `npm run dev` the two sit on different ports, which are different
+  origins, so the shop sees no gold at all;
+- «Новая игра» in Quest wipes the gold but not the shop's ledger, so the
+  balance reads nought until he has earned past the starting point again.
+
+A new tab picks up fresh gold straight away; an open one does as soon as Quest
+writes, or when it comes back into view.
+
+Every case is one of three things, and the metal says which: **gold**, he has
+the coins for it; **cinnabar** with a padlock, and how many coins short he is;
+**emerald** with a seal, already his.
 
 ### Buying
 
@@ -33,29 +85,20 @@ A gold case buys. One tap arms it, «да» spends and «нет» puts it back �
 button is large and a six-year-old's aim is not, and forty coins take a week to
 earn.
 
-The purchase is kept in that browser's `localStorage`, because a static site has
-nowhere else to write. That is the objection this shop once dropped the buy
-button over, so the two are not allowed to drift apart quietly:
+A purchase can be put back, but only while the shop has stayed open since it was
+made: a case bought in this sitting carries «вернуть», and one tap returns the
+coins — what he paid, not what the shelf asks today. Close the page and the day
+is settled: a toy bought last week is on his shelf at home by now, and handing
+the coins back for it would be handing them back twice. What `state.json`
+granted can never be returned at all: the file would assert it again on the
+next open and the coins would be free.
 
-> **Edit the file and the tablet obeys. Leave it alone and the tablet counts.**
+Each purchase is saved with its price, so raising a price later does not reach
+back and charge again for a toy he already has.
 
-Every save is stamped with the committed state it was opened from. Change
-`state.json` — a coin, an id, anything — and the next time the page opens, that
-stamp no longer matches and whatever the tablet remembered is dropped for what
-the file says. Between two edits the tablet spends as it likes.
-
-So the file is still the source of truth, and settling an argument about it is
-still one commit. What the tablet adds is that the child does not have to wait
-for a parent with a laptop to take the orc he just earned.
-
-Two corners worth knowing: the ledger is **per browser**, so his tablet and the
-family laptop count separately, and clearing site data resets him to the file.
-Reordering the `bought` array is not an edit — it says the same thing, so it
-does not wipe anything.
-
-A typo is caught before it is deployed: TypeScript reads the file, and
-`src/shop/state.test.ts` checks what it cannot — a negative or fractional
-balance, an id listed twice, or an id for a toy that does not exist.
+A typo in `state.json` is caught before it is deployed: TypeScript reads the
+file, and `src/shop/state.test.ts` checks what it cannot — a negative or
+fractional balance, an id listed twice, or an id for a toy that does not exist.
 
 ## Running it
 
@@ -98,10 +141,10 @@ photos\<category>\     the originals off the phone — NOT in git
 public\<category>\     the web-sized .webp the site serves
 scripts\photos.mjs     one into the other
 src\core\shelf.ts      given the state and a toy: his, within reach, or not yet
-src\core\wallet.ts     the ledger: spending, and the rule that the file wins
+src\core\wallet.ts     the ledger: spending against the gold earned in Quest
 src\adapters\          localStorage, wrapped so a private window cannot crash it
 src\shop\catalog.ts    what is on the shelf, and for how much
-src\shop\state.json    what the child starts with — the file you edit
+src\shop\state.json    where the count starts — the file you edit
 src\locale\            the text pack: every word the child sees
 src\ui\                React components, one hook and one stylesheet
 ```

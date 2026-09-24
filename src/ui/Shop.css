@@ -431,6 +431,22 @@ button.mark--ready:active {
   transform: translateY(1px);
 }
 
+/* Quiet on purpose. The seal in the corner is what the card is saying; this is
+   a way back for the minute after a mis-tap, not an invitation to trade. It is
+   parchment rather than emerald so it never reads as part of the seal. */
+.mark--undo {
+  border-color: rgba(232, 223, 204, 0.22);
+  color: var(--pergament-dim);
+  letter-spacing: 0.14em;
+}
+
+@media (hover: hover) {
+  button.mark--undo:hover {
+    border-color: rgba(232, 223, 204, 0.45);
+    color: var(--pergament);
+  }
+}
+
 /* ── «Точно?» ────────────────────────────────────────────────────────────
    The armed case. It stands in the mark's place and inside the mark's row, so
    arming one card moves nothing anywhere on the shelf. */

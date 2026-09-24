@@ -11,8 +11,8 @@ import './Shop.css'
 /**
  * The shop, which is the whole app.
  *
- * What the child has starts in the repository (`src/shop/state.json`) and is
- * then kept by `useWallet`, which spends against it and saves to this browser.
+ * What the child has is kept by `useWallet`: the gold he banked in Quest, less
+ * what this shop has spent, with what he already had from `src/shop/state.json`.
  * The rest of the state here is about the screen: which shelf is open, and
  * which photograph is being looked at.
  */
@@ -45,8 +45,10 @@ export function Shop() {
                   item={item}
                   state={shop.stateOf(item)}
                   shortfall={shop.shortfall(item)}
+                  undoable={shop.undoable(item)}
                   onOpenPhoto={() => setViewing(item)}
                   onBuy={() => shop.buy(item)}
+                  onUndo={() => shop.undo(item)}
                 />
               </li>
             ))}

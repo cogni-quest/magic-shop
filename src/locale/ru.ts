@@ -68,6 +68,13 @@ export const ru = {
     confirm: (name: string, price: number) => `купить «${name}» за ${ru.coins(price)}?`,
     yes: 'да',
     no: 'нет',
+    /**
+     * Offered only on what was bought in this sitting. «Вернуть», not «отменить»:
+     * the coins come back and the toy goes back on the shelf, which is a return
+     * and not the undoing of something that never happened.
+     */
+    undo: 'вернуть',
+    undoLabel: (name: string) => `вернуть «${name}» в лавку`,
     short: (missing: number) => `не хватает ${missing}`,
     shortLabel: (missing: number) => `не хватает ${ru.coins(missing)}`,
     bought: 'Куплено',
