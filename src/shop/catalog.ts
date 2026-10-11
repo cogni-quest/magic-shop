@@ -69,7 +69,7 @@ export interface Item {
 // ─────────────────────────────────────────────────────────────────────────
 // CATEGORIES — id · emoji · colour. The tab bar is this table, in this order,
 // which is cheapest shelf first: skeletons at fifteen, elves at thirty,
-// vikings at forty, orcs at fifty.
+// vikings at forty, orcs at fifty, death knights at sixty.
 //
 // Gold, because on this shelf the metal already means something: gold is what a
 // thing costs, emerald is what is already his, cinnabar is what he cannot reach
@@ -100,6 +100,10 @@ const CATEGORIES_TABLE: readonly CategoryRow[] = [
   // colours instead and lands a cartoon sticker on the lacquer.
   ['vikings', '🛡', '#6f9fd0'],
   ['orcs', '⚔', '#d9a441'],
+  // Rose: the last gap on the wheel, between cinnabar and amethyst and pale
+  // enough to stay clear of both. Their own sea-green would have read as
+  // emerald, which on this shelf means «already his».
+  ['death-knights', '✠', '#d47fa6'],
 ]
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -166,6 +170,14 @@ const ITEMS_TABLE: readonly ItemRow[] = [
   ['skeleton-3', 'skeletons', 'skeleton-spear-flail', 15, '48% 48%', 1.9],
   // A ball and chain in each hand, both balls resting on the ground.
   ['skeleton-4', 'skeletons', 'skeleton-two-flails', 15, '62% 46%', 1.8],
+  // Horned helm, sword raised across him, a mailed fist on the other side.
+  ['death-knight-1', 'death-knights', 'death-knight-sword', 60, '65% 44%', 1.6],
+  // An axe swung overhead and a second held low; the high blade sets the crop.
+  ['death-knight-2', 'death-knights', 'death-knight-two-axes', 60, '59% 34%', 1.7],
+  // Spiked pauldrons, sword point-down, a shield thrown out to the right.
+  ['death-knight-3', 'death-knights', 'death-knight-sword-shield', 60, '64% 45%', 1.7],
+  // Hooded, cloak swept out, the blade held flat above her head.
+  ['death-knight-4', 'death-knights', 'death-knight-hooded', 60, '63% 48%', 1.8],
 ]
 
 /** Hand notes, where two toys of one kind need telling apart. Empty today. */

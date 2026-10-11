@@ -24,6 +24,7 @@ export const ru = {
     vikings: 'Викинги',
     elves: 'Эльфы',
     skeletons: 'Скелеты',
+    'death-knights': 'Рыцари смерти',
   } as Record<string, string>,
 
   /**
@@ -54,6 +55,10 @@ export const ru = {
     'skeleton-two-swords': 'Скелет с двумя мечами',
     'skeleton-sword-shield': 'Скелет с мечом и щитом',
     'skeleton-two-flails': 'Скелет с двумя кистенями',
+    'death-knight-sword': 'Рыцарь смерти с мечом',
+    'death-knight-two-axes': 'Рыцарь смерти с двумя топорами',
+    'death-knight-sword-shield': 'Рыцарь смерти с мечом и щитом',
+    'death-knight-hooded': 'Рыцарь смерти в капюшоне',
   } as Record<string, string>,
 
   shop: {
