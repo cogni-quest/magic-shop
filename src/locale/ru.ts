@@ -23,6 +23,7 @@ export const ru = {
     orcs: 'Орки',
     vikings: 'Викинги',
     elves: 'Эльфы',
+    skeletons: 'Скелеты',
   } as Record<string, string>,
 
   /**
@@ -49,6 +50,10 @@ export const ru = {
     'elf-archer-ready': 'Эльф лучник наготове',
     'elf-swordsman': 'Эльф с мечом',
     'elf-archer-ambush': 'Эльф лучник из засады',
+    'skeleton-spear-flail': 'Скелет с копьём и кистенём',
+    'skeleton-two-swords': 'Скелет с двумя мечами',
+    'skeleton-sword-shield': 'Скелет с мечом и щитом',
+    'skeleton-two-flails': 'Скелет с двумя кистенями',
   } as Record<string, string>,
 
   shop: {

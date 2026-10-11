@@ -68,8 +68,8 @@ export interface Item {
 
 // ─────────────────────────────────────────────────────────────────────────
 // CATEGORIES — id · emoji · colour. The tab bar is this table, in this order,
-// which is cheapest shelf first: elves at thirty, vikings at forty, orcs at
-// fifty.
+// which is cheapest shelf first: skeletons at fifteen, elves at thirty,
+// vikings at forty, orcs at fifty.
 //
 // Gold, because on this shelf the metal already means something: gold is what a
 // thing costs, emerald is what is already his, cinnabar is what he cannot reach
@@ -88,6 +88,10 @@ export interface Item {
 type CategoryRow = readonly [id: string, icon: string, color: string]
 
 const CATEGORIES_TABLE: readonly CategoryRow[] = [
+  // Bone: the fifth voice, and the only one with next to no hue, so it cannot be
+  // taken for any of the three metals or the two colours below. ☠ defaults to
+  // text presentation, like the glyphs under it.
+  ['skeletons', '☠', '#c8bfae'],
   // Amethyst: the fourth voice, clear of gold, cinnabar and emerald, and far
   // enough from the vikings' steel blue to read as its own colour on the tab bar.
   ['elves', '⚜', '#9b7fd4'],
@@ -154,6 +158,14 @@ const ITEMS_TABLE: readonly ItemRow[] = [
   ['elf-5', 'elves', 'elf-archer-ambush', 30, '51% 62%', 1.7],
   // Mid-stride, axe swung wide — the broadest figure here, so width sets the zoom and height comes free.
   ['viking-5', 'vikings', 'viking-berserk', 40, '62% 17%', 1.5],
+  // A blade in each fist, held low and wide.
+  ['skeleton-1', 'skeletons', 'skeleton-two-swords', 15, '51% 47%', 1.5],
+  // Shield and sword, up on a rock off to the right — the smallest in his frame.
+  ['skeleton-2', 'skeletons', 'skeleton-sword-shield', 15, '67% 43%', 1.8],
+  // Spear in one hand, ball and chain in the other, shot from above on grey dust.
+  ['skeleton-3', 'skeletons', 'skeleton-spear-flail', 15, '48% 48%', 1.9],
+  // A ball and chain in each hand, both balls resting on the ground.
+  ['skeleton-4', 'skeletons', 'skeleton-two-flails', 15, '62% 46%', 1.8],
 ]
 
 /** Hand notes, where two toys of one kind need telling apart. Empty today. */
