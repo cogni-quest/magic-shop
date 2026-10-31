@@ -69,7 +69,7 @@ export interface Item {
 // ─────────────────────────────────────────────────────────────────────────
 // CATEGORIES — id · emoji · colour. The tab bar is this table, in this order,
 // which is cheapest shelf first: skeletons at fifteen, elves at thirty,
-// vikings at forty, orcs at fifty, death knights at sixty.
+// vikings at forty, orcs at fifty, death knights at sixty, bears at eighty.
 //
 // Gold, because on this shelf the metal already means something: gold is what a
 // thing costs, emerald is what is already his, cinnabar is what he cannot reach
@@ -104,6 +104,10 @@ const CATEGORIES_TABLE: readonly CategoryRow[] = [
   // enough to stay clear of both. Their own sea-green would have read as
   // emerald, which on this shelf means «already his».
   ['death-knights', '✠', '#d47fa6'],
+  // Umber: the bears' own fur, darkened and greyed well below the gold so it
+  // reads as earth rather than as a price. ❋ is a text glyph, like the rest —
+  // 🐻 would arrive as a sticker.
+  ['bears', '❋', '#a07a5f'],
 ]
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -178,6 +182,10 @@ const ITEMS_TABLE: readonly ItemRow[] = [
   ['death-knight-3', 'death-knights', 'death-knight-sword-shield', 60, '64% 45%', 1.7],
   // Hooded, cloak swept out, the blade held flat above her head.
   ['death-knight-4', 'death-knights', 'death-knight-hooded', 60, '63% 48%', 1.8],
+  // A polar bear stepping up onto a lump of ice, against a whitewashed wall.
+  ['bear-1', 'bears', 'polar-bear', 80, '50% 56%', 1.5],
+  // A brown bear roaring on the rocks; shot landscape and nearly frame-wide, so no zoom.
+  ['bear-2', 'bears', 'brown-bear-roaring', 80, '54% 42%', 1.0],
 ]
 
 /** Hand notes, where two toys of one kind need telling apart. Empty today. */
