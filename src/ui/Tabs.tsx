@@ -25,14 +25,26 @@ export function Tabs({
           key={category.id}
           role="tab"
           aria-selected={category.id === activeId}
-          className={`tab${category.id === activeId ? ' tab--active' : ''}`}
+          className={`tab${category.id === activeId ? ' tab--active' : ''}${category.featured ? ' tab--featured' : ''}`}
           style={{ '--card': category.color } as CSSProperties}
           onClick={() => onPick(category.id)}
         >
+          {category.featured && (
+            // The one emoji on the bar, on purpose: everywhere else a sticker
+            // would be noise, here it is the point.
+            <span className="tab__skull" aria-hidden="true">
+              💀
+            </span>
+          )}
           <span className="tab__icon" aria-hidden="true">
             {category.icon}
           </span>
           {category.title}
+          {category.featured && (
+            <span className="tab__skull" aria-hidden="true">
+              💀
+            </span>
+          )}
         </button>
       ))}
     </nav>

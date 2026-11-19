@@ -222,6 +222,51 @@
   letter-spacing: 0;
 }
 
+/* The bosses' tab: lit in its colour whether open or not, a size up, with a
+   skull either side and a slow breathing glow — the shelf worth saving for. */
+.tab--featured {
+  border-color: var(--card);
+  color: var(--pergament);
+  font-size: 12px;
+  font-weight: 700;
+  background: linear-gradient(180deg, rgba(154, 165, 173, 0.16), rgba(0, 0, 0, 0.35));
+  text-shadow: 0 0 10px var(--card);
+  animation: tab-boss-glow 2.4s ease-in-out infinite;
+}
+
+.tab--featured.tab--active {
+  color: var(--card);
+  border-width: 2px;
+}
+
+.tab--featured .tab__icon {
+  font-size: 1.15rem;
+}
+
+.tab__skull {
+  font-size: 1.1rem;
+  letter-spacing: 0;
+  line-height: 1;
+  text-shadow: none;
+}
+
+@keyframes tab-boss-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 4px 0 rgba(154, 165, 173, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 14px 2px rgba(154, 165, 173, 0.6);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tab--featured {
+    animation: none;
+    box-shadow: 0 0 10px 1px rgba(154, 165, 173, 0.45);
+  }
+}
+
 .shelf {
   flex: 1;
 }

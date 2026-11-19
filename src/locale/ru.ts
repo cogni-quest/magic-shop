@@ -26,6 +26,7 @@ export const ru = {
     skeletons: 'Скелеты',
     'death-knights': 'Рыцари смерти',
     bears: 'Медведи',
+    bosses: 'Боссы',
   } as Record<string, string>,
 
   /**
@@ -62,6 +63,7 @@ export const ru = {
     'death-knight-hooded': 'Рыцарь смерти в капюшоне',
     'polar-bear': 'Белый медведь',
     'brown-bear-roaring': 'Бурый медведь',
+    cyclops: 'Циклоп',
   } as Record<string, string>,
 
   shop: {

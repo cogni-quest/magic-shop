@@ -23,6 +23,11 @@ export interface Category {
   readonly icon: string
   /** The colour every card in this category is framed in. */
   readonly color: string
+  /**
+   * A shelf that should shout from the tab bar even when it is not open — the
+   * bosses. Its tab is always lit in its colour, glows, and carries a skull.
+   */
+  readonly featured: boolean
 }
 
 export interface Item {
@@ -69,7 +74,8 @@ export interface Item {
 // ─────────────────────────────────────────────────────────────────────────
 // CATEGORIES — id · emoji · colour. The tab bar is this table, in this order,
 // which is cheapest shelf first: skeletons at fifteen, elves at thirty,
-// vikings at forty, orcs at fifty, death knights at sixty, bears at eighty.
+// vikings at forty, orcs at fifty, death knights at sixty, bears at eighty,
+// bosses at two hundred and fifty.
 //
 // Gold, because on this shelf the metal already means something: gold is what a
 // thing costs, emerald is what is already his, cinnabar is what he cannot reach
@@ -85,7 +91,7 @@ export interface Item {
 // these, means moving them into two.
 // ─────────────────────────────────────────────────────────────────────────
 
-type CategoryRow = readonly [id: string, icon: string, color: string]
+type CategoryRow = readonly [id: string, icon: string, color: string, featured?: boolean]
 
 const CATEGORIES_TABLE: readonly CategoryRow[] = [
   // Bone: the fifth voice, and the only one with next to no hue, so it cannot be
@@ -108,6 +114,11 @@ const CATEGORIES_TABLE: readonly CategoryRow[] = [
   // reads as earth rather than as a price. ❋ is a text glyph, like the rest —
   // 🐻 would arrive as a sticker.
   ['bears', '❋', '#a07a5f'],
+  // Bosses: last and dearest. Cold stone grey, the colour of the first of them,
+  // kept cool so it does not read as the skeletons' warm bone. ♛ is the crown the
+  // robots' boss wears too, and a text glyph like the rest. Featured: the one tab
+  // meant to be noticed from across the room — see `.tab--featured`.
+  ['bosses', '♛', '#9aa5ad', true],
 ]
 
 // ─────────────────────────────────────────────────────────────────────────
@@ -186,15 +197,19 @@ const ITEMS_TABLE: readonly ItemRow[] = [
   ['bear-1', 'bears', 'polar-bear', 80, '50% 56%', 1.5],
   // A brown bear roaring on the rocks; shot landscape and nearly frame-wide, so no zoom.
   ['bear-2', 'bears', 'brown-bear-roaring', 80, '54% 42%', 1.0],
+  // The first boss: a stone giant on the beach, claw out and fist down. Shot
+  // landscape and nearly frame-wide, so no zoom; the crop keeps the head and the crystals.
+  ['boss-1', 'bosses', 'cyclops', 250, '42% 38%', 1.0],
 ]
 
 /** Hand notes, where two toys of one kind need telling apart. Empty today. */
 const NOTES: Record<string, string> = {}
 
-export const CATEGORIES: readonly Category[] = CATEGORIES_TABLE.map(([id, icon, color]) => ({
+export const CATEGORIES: readonly Category[] = CATEGORIES_TABLE.map(([id, icon, color, featured = false]) => ({
   id,
   icon,
   color,
+  featured,
   // Falling back to the id rather than to an empty tab: a missing translation
   // should look wrong on screen, not invisible.
   title: t.categories[id] ?? id,
